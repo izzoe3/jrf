@@ -111,30 +111,97 @@ Each request object should map to a database record:
 
 ---
 
-## Email Notifications (to implement)
+## Email Architecture — Threaded Acknowledgement System
 
-| Trigger | Recipient | Content |
-|---------|-----------|---------|
-| Request submitted | HOD (`hodEmail`) | Approval link + request summary |
-| Request submitted | Digital Comms team | New request notification |
-| HOD approves | Requestor | Confirmation + reference number |
-| HOD rejects | Requestor | Rejection notice + reason |
-| Status changes to In Progress | Requestor | "We've started on your request" |
-| Status changes to Completed | Requestor | "Your project is ready" |
+### Design principle
+The JRF system has two jobs and two jobs only:
 
-**Email subject format:** `[QIU-2025-0001] Job Request — {Category} · {Department}`
+| System | Purpose |
+|--------|---------|
+| **JRF portal** | Submit requests · Track status |
+| **Email thread** | All communication — clarifications, queries, updates |
+
+There are no contact buttons in the portal. Requestors are directed to reply to their acknowledgement email for everything else. This eliminates duplicate channels and inbox clutter.
 
 ---
 
-## Enquiry Email Button (my-requests.html)
+### How the thread works
 
-Each request card has an **✉ Enquire** button. When clicked it opens the user's mail client pre-filled:
+**Step 1 — Submission triggers the acknowledgement email (automated)**
 
-- **To:** `digitalcomms@qiu.edu.my`
-- **Subject:** `[QIU-2025-0001] Enquiry — {Department}`
-- **Body:** Pre-filled template with ref number and department
+Sent immediately from `digitalcomms@qiu.edu.my` to the requestor. This email is the anchor of the entire thread.
 
-In production this is a `mailto:` link with `encodeURIComponent` on subject and body. No backend needed for this feature.
+```
+To:      staff@qiu.edu.my
+Subject: [QIU-2025-0001] Job Request — Poster · Faculty of Health Sciences
+
+Hi [Name],
+
+Thank you for your submission. Your reference number is QIU-2025-0001.
+
+You can track your request status at: [link to my-requests.html]
+
+IMPORTANT: This email is your communication channel for this request.
+If you have any additional information, files, or queries — please reply
+directly to this email. Do not submit a new request or send a separate email.
+
+Our team will be in touch via this thread if we need clarification.
+We will also update you here when your request is Approved, In Progress,
+and Completed.
+
+Digital Communications
+Quest International University
+```
+
+**Step 2 — Status update emails (3 public stages, automated)**
+
+The backend sends these as replies to the original thread using `In-Reply-To` and `References` headers. The requestor sees them appear inside the same Gmail conversation — no new thread starts.
+
+| Status change | Email sent to requestor? | Message |
+|---|---|---|
+| Approved | ✅ Yes — reply to thread | "Your request has been endorsed by your HOD and is queued for our team." |
+| In Progress | ✅ Yes — reply to thread | "Our team has started work on your request." |
+| Completed | ✅ Yes — reply to thread | "Your project is ready. Please collect from Digital Comms." |
+| Rejected | ❌ No | HOD handles communication directly with their staff |
+| On Hold | ❌ No | Team member reaches out via the thread manually |
+| Assigned / Reassigned | ❌ No | Internal only |
+
+**Step 3 — Communication flows through the thread**
+
+- **Requestor needs to add info or ask something** → they reply to the acknowledgement email
+- **Digital Comms needs clarification** → team member replies to the same thread from the shared inbox
+- **Everything stays in one place** — one thread per request, for both parties
+
+---
+
+### Critical implementation requirement — email threading headers
+
+All system-generated follow-up emails (status updates) must include these headers to guarantee they appear in the same thread:
+
+```
+Message-ID:  <unique-id@digitalcomms.qiu.edu.my>   ← on the acknowledgement
+References:  <ack-message-id@digitalcomms.qiu.edu.my>
+In-Reply-To: <ack-message-id@digitalcomms.qiu.edu.my>
+Subject:     [QIU-2025-0001] Job Request — Poster · Faculty of Health Sciences
+```
+
+**Store the `Message-ID` of the acknowledgement email in the database at send time.** All subsequent automated emails for that request reference it. Use SendGrid, Nodemailer, or Google Workspace SMTP — all support custom headers.
+
+**The subject line must never be modified programmatically.** One character difference breaks threading.
+
+---
+
+### What this looks like in the requestor's inbox
+
+```
+📧 [QIU-2025-0001] Job Request — Poster · Faculty of Health Sciences   (4)
+   ├── Digital Comms   "Thank you for your submission…"        Jan 8
+   ├── Digital Comms   "Your request has been approved…"       Jan 9
+   ├── Digital Comms   "We've started work on your request…"   Jan 13
+   └── Digital Comms   "Your project is complete…"             Jan 22
+```
+
+If the requestor replied to clarify something, their reply and the team's response appear in the same thread — clean, contextual, no separate emails.
 
 ---
 

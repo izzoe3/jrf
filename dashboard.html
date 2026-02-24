@@ -188,9 +188,6 @@
   .tl-by { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
   /* EMAIL LINK in drawer */
-  .email-link { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 500; color: var(--ink); text-decoration: none; border: 1px solid var(--border); border-radius: 4px; padding: 8px 14px; transition: all 0.18s; }
-  .email-link:hover { background: var(--ink); color: white; border-color: var(--ink); }
-
   .empty-row { text-align: center; padding: 60px 20px; }
   .empty-row .icon { font-size: 36px; margin-bottom: 12px; }
   .empty-row h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 6px; }
@@ -318,20 +315,6 @@
   function fmtDate(iso) { if(!iso) return '—'; return new Date(iso).toLocaleDateString('en-MY',{day:'numeric',month:'short',year:'numeric'}); }
   function isOverdue(iso) { return iso && new Date(iso) < new Date() && new Date(iso).toDateString() !== new Date().toDateString(); }
   function initials(n) { return n?.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()||'??'; }
-
-  function emailHref(ref, dept) {
-    const s = encodeURIComponent(`[${ref}] Update — ${dept}`);
-    const b = encodeURIComponent(`Hi,\n\nThis is an update regarding request ${ref}.\n\n`);
-    return `mailto:${ref}?subject=${s}&body=${b}`;
-  }
-  function requestorGmailHref(r) {
-    const su  = `[${r.ref}] Job Request — ${r.department}`;
-    const bod = `Hi ${r.requestedBy},\n\nWe are reaching out regarding your job request ${r.ref}.\n\n[Write your message here]\n\nThank you,\nDigital Communications, QIU`;
-    return `https://mail.google.com/mail/?view=cm&fs=1` +
-           `&to=${encodeURIComponent(r.email)}` +
-           `&su=${encodeURIComponent(su)}` +
-           `&body=${encodeURIComponent(bod)}`;
-  }
 
   function updateStats() {
     const all = getAll();
@@ -465,10 +448,6 @@
           <div class="info-item"><dt>Category</dt><dd>${CAT[r.category]||r.category}${r.subtypes?.length?' — '+r.subtypes.join(', '):''}</dd></div>
           ${r.size?`<div class="info-item"><dt>Specs</dt><dd>${r.size}${r.colour?' · '+r.colour:''}${r.bleed?' · '+r.bleed:''}</dd></div>`:''}
         </div>
-        <a class="email-link" href="${requestorGmailHref(r)}" target="_blank" rel="noopener" style="margin-top:8px" title="Opens Gmail — subject is pre-set to keep correspondence threaded">
-          <svg width="13" height="10" viewBox="0 0 13 10" fill="none"><path d="M0 1.5C0 .67.67 0 1.5 0h10C12.33 0 13 .67 13 1.5v7c0 .83-.67 1.5-1.5 1.5h-10C.67 10 0 9.33 0 8.5v-7zm1 .61V8.5c0 .28.22.5.5.5h10c.28 0 .5-.22.5-.5V2.11L6.5 6 1 2.11zM1.88 1L6.5 4.73 11.12 1H1.88z" fill="currentColor"/></svg>
-          Email ${r.requestedBy} via Gmail
-        </a>
       </div>
 
       <!-- PROJECT DETAILS -->

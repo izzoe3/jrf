@@ -61,17 +61,6 @@
 
   .cat-pill { font-size: 11px; padding: 3px 9px; border-radius: 20px; background: var(--paper); border: 1px solid var(--border); color: var(--muted); }
 
-  /* EMAIL BUTTON */
-  .email-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 10px;
-    letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 13px;
-    border-radius: 4px; background: var(--ink); color: var(--white);
-    text-decoration: none; transition: all 0.18s; border: none; cursor: pointer;
-  }
-  .email-btn:hover { background: #333; transform: translateY(-1px); }
-  .email-tip { font-size: 10px; color: var(--muted); line-height: 1.4; margin-top: 4px; max-width: 160px; text-align: right; }
-
   .chevron { font-size: 14px; color: var(--muted); transition: transform 0.2s; }
   .chevron.rotated { transform: rotate(180deg); }
 
@@ -148,6 +137,9 @@
   <div class="poc-notice">
     <strong>POC Note:</strong> In production, this page will automatically filter to show only your own requests via Google SSO. For this demo, all submitted requests are visible.
   </div>
+  <div style="background:var(--white);border:1px solid var(--border);border-left:3px solid var(--ink);border-radius:0 6px 6px 0;padding:14px 18px;margin-bottom:28px;font-size:13px;line-height:1.7;color:var(--ink);">
+    <strong>This page shows your request status only.</strong> For all enquiries, clarifications, or updates — please reply directly to the acknowledgement email you received from <strong>digitalcomms@qiu.edu.my</strong> when you submitted your request. All communication for a request happens in that email thread.
+  </div>
   <div class="req-list" id="reqList"></div>
 </div>
 
@@ -189,12 +181,16 @@
   }
 
   function getStatusNote(status) {
+    // All notes direct the requestor to their acknowledgement email thread.
+    // The JRF portal is for status tracking only — all communication happens via email.
+    const emailReminder = `Check your inbox for the acknowledgement email from <strong>digitalcomms@qiu.edu.my</strong> and reply directly to that thread for any queries or additional information.`;
     const notes = {
-      rejected: `<div class="status-note note-rejected">⚠️ Your request was not endorsed by your HOD. Please speak with them directly, or submit a revised request.</div>`,
-      on_hold: `<div class="status-note note-hold">⏸ Your request is temporarily on hold. Our team may reach out via your acknowledgement email for clarification — please check your inbox and <strong>reply to that same email thread</strong>.</div>`,
-      completed: `<div class="status-note note-completed">✓ This project is complete! Please collect your deliverable from the Digital Communications office.</div>`,
-      approved: `<div class="status-note note-approved">✓ Your request has been endorsed by your HOD and is queued for our team to begin work.</div>`,
-      in_progress: `<div class="status-note note-approved" style="background:var(--indigo-light);color:var(--indigo);">⚙️ Our team is currently working on your request. If we need any clarification, we'll reach out via your acknowledgement email — keep an eye on that thread.</div>`,
+      pending_approval: `<div class="status-note" style="background:var(--amber-light);color:var(--amber);">⏳ Awaiting endorsement from your HOD. No action needed from you at this stage.</div>`,
+      approved:  `<div class="status-note note-approved">✓ Your request has been endorsed by your HOD and is queued for our team. You will receive an email update when work begins.</div>`,
+      in_progress: `<div class="status-note" style="background:var(--indigo-light);color:var(--indigo);">⚙️ Our team is working on your request. If we need clarification, we will reach out via your request email thread. ${emailReminder}</div>`,
+      on_hold: `<div class="status-note note-hold">⏸ Your request is temporarily on hold. Our team will contact you via your request email thread. ${emailReminder}</div>`,
+      completed: `<div class="status-note note-completed">✓ Your project is complete — please collect your deliverable from the Digital Communications office.</div>`,
+      rejected:  `<div class="status-note note-rejected">⚠️ Your request was not endorsed by your HOD. Please speak with them directly or submit a revised request.</div>`,
     };
     return notes[status] || '';
   }
@@ -202,37 +198,6 @@
   function fmtDate(iso) {
     if (!iso) return '—';
     return new Date(iso).toLocaleDateString('en-MY', { day:'numeric', month:'short', year:'numeric' });
-  }
-
-  // Builds a Gmail compose URL instead of mailto: so clicking always opens
-  // Gmail in the browser (or the Gmail app on mobile) rather than Outlook
-  // or the OS default mail client.
-  //
-  // The subject format [REF] Job Request — Dept is intentionally fixed.
-  // This is what threads all replies together in Gmail's conversation view.
-  // The dev team should use the same subject on all outbound system emails
-  // (acknowledgement, status updates) so everything chains in one thread.
-  function gmailHref(ref, dept, purpose) {
-    const to  = 'digitalcomms@qiu.edu.my';
-    const su  = `[${ref}] Job Request — ${dept}`;
-    const bod =
-      `Hi Digital Comms team,\n\n` +
-      `This is a follow-up on my request:\n\n` +
-      `Reference: ${ref}\n` +
-      `Department: ${dept}\n` +
-      `Request: ${(purpose || '').substring(0, 80)}${(purpose||'').length > 80 ? '…' : ''}\n\n` +
-      `[Write your message here]\n\nThank you.`;
-
-    // Gmail compose URL — works in browser and deep-links to Gmail app on Android/iOS
-    return `https://mail.google.com/mail/?view=cm&fs=1` +
-           `&to=${encodeURIComponent(to)}` +
-           `&su=${encodeURIComponent(su)}` +
-           `&body=${encodeURIComponent(bod)}`;
-  }
-
-  function openGmail(ref, dept, purpose, event) {
-    event.stopPropagation();
-    window.open(gmailHref(ref, dept, purpose), '_blank', 'noopener');
   }
 
   let openCard = null;
@@ -279,11 +244,6 @@
           </div>
           <div class="req-right">
             <span class="status-badge s-${r.status}">${STATUS_LABELS[r.status]||r.status}</span>
-            <button class="email-btn" onclick="openGmail('${r.ref}', '${r.department.replace(/'/g,"\\'")}', '${(r.jobPurpose||'').replace(/'/g,"\\'").substring(0,60)}', event)" title="Opens Gmail — do not change the subject line so replies stay in one thread">
-              <svg width="13" height="10" viewBox="0 0 13 10" fill="none" style="flex-shrink:0"><path d="M0 1.5C0 .67.67 0 1.5 0h10C12.33 0 13 .67 13 1.5v7c0 .83-.67 1.5-1.5 1.5h-10C.67 10 0 9.33 0 8.5v-7zm1 .61V8.5c0 .28.22.5.5.5h10c.28 0 .5-.22.5-.5V2.11L6.5 6 1 2.11zM1.88 1L6.5 4.73 11.12 1H1.88z" fill="currentColor"/></svg>
-              Contact Us
-            </button>
-            <div class="email-tip">Keep the subject line intact — it threads all replies together.</div>
             <span class="chevron" id="cv-${i}">▾</span>
           </div>
         </div>
