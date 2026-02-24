@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Requests — QIU Digital Communications</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0d; --paper: #f0ede8; --white: #fff;
+    --rust: #c0392b; --rust-light: #fdf0ee;
+    --gold: #c9a84c; --muted: #7a7570; --border: #d9d3ca;
+    --green: #1a6b45; --green-light: #eaf5ef;
+    --amber: #b45309; --amber-light: #fef3c7;
+    --indigo: #3730a3; --indigo-light: #eef2ff;
+    --gray: #6b7280; --gray-light: #f3f4f6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; }
+
+  .topband { background: var(--ink); color: var(--paper); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 20; }
+  .brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .brand span { color: var(--gold); }
+  nav { display: flex; gap: 2px; }
+  nav a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 13px; border-radius: 3px; transition: all 0.18s; }
+  nav a:hover { color: var(--paper); background: rgba(255,255,255,0.07); }
+  nav a.active { color: var(--gold); background: rgba(201,168,76,0.1); }
+  .sso-badge { font-size: 11px; color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 6px; }
+  .sso-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; }
+
+  .page-header { padding: 44px 40px 36px; background: var(--white); border-bottom: 1px solid var(--border); }
+  .page-header .tag { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .page-header h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(22px,3vw,32px); margin-bottom: 6px; }
+  .page-header p { font-size: 14px; color: var(--muted); font-weight: 300; }
+
+  .page-body { max-width: 860px; margin: 0 auto; padding: 32px 40px 80px; }
+
+  .poc-notice { background: var(--indigo-light); border: 1px solid rgba(55,48,163,0.15); border-radius: 6px; padding: 12px 18px; font-size: 13px; color: var(--indigo); margin-bottom: 28px; line-height: 1.6; }
+
+  .req-list { display: flex; flex-direction: column; gap: 18px; }
+
+  .req-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: box-shadow 0.2s; }
+  .req-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+
+  .req-card-top { display: flex; align-items: flex-start; gap: 18px; padding: 20px 22px; cursor: pointer; }
+  .req-ref-col { flex-shrink: 0; min-width: 110px; }
+  .req-ref { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; color: var(--rust); display: block; margin-bottom: 4px; }
+  .req-date { font-size: 11px; color: var(--muted); }
+  .req-meta { flex: 1; min-width: 0; }
+  .req-title { font-weight: 600; font-size: 15px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .req-sub { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .req-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+
+  .status-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; display: inline-block; white-space: nowrap; }
+  .s-pending_approval { background: var(--amber-light); color: var(--amber); }
+  .s-approved { background: var(--green-light); color: var(--green); }
+  .s-rejected { background: var(--rust-light); color: var(--rust); }
+  .s-in_progress { background: var(--indigo-light); color: var(--indigo); }
+  .s-on_hold { background: var(--gray-light); color: var(--gray); }
+  .s-completed { background: var(--green-light); color: var(--green); }
+
+  .cat-pill { font-size: 11px; padding: 3px 9px; border-radius: 20px; background: var(--paper); border: 1px solid var(--border); color: var(--muted); }
+
+  /* EMAIL BUTTON */
+  .email-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 13px;
+    border-radius: 4px; background: var(--ink); color: var(--white);
+    text-decoration: none; transition: all 0.18s; border: none; cursor: pointer;
+  }
+  .email-btn:hover { background: #333; transform: translateY(-1px); }
+  .email-tip { font-size: 10px; color: var(--muted); line-height: 1.4; margin-top: 4px; max-width: 160px; text-align: right; }
+
+  .chevron { font-size: 14px; color: var(--muted); transition: transform 0.2s; }
+  .chevron.rotated { transform: rotate(180deg); }
+
+  /* PROGRESS TRACKER */
+  .progress-wrap { padding: 20px 22px 22px; border-top: 1px solid var(--border); background: #faf9f7; display: none; }
+  .progress-wrap.open { display: block; }
+  .progress-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+
+  .stages { display: flex; position: relative; margin-bottom: 16px; }
+  .stages::before { content: ''; position: absolute; top: 14px; left: 20px; right: 20px; height: 2px; background: var(--border); z-index: 0; }
+  .stage { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; z-index: 1; }
+  .stage-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.3s; }
+  .stage.done .stage-dot { background: var(--green); border-color: var(--green); color: white; font-size: 10px; font-weight: bold; }
+  .stage.active .stage-dot { background: var(--rust); border-color: var(--rust); color: white; font-size: 10px; box-shadow: 0 0 0 5px rgba(192,57,43,0.12); }
+  .stage.hold .stage-dot { background: var(--amber); border-color: var(--amber); color: white; }
+  .stage.rejected-dot .stage-dot { background: var(--rust); border-color: var(--rust); color: white; font-size: 10px; }
+  .stage-label { font-size: 10px; font-weight: 500; color: var(--muted); text-align: center; text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.3; }
+  .stage.done .stage-label, .stage.active .stage-label { color: var(--ink); font-weight: 600; }
+
+  .status-note { font-size: 13px; border-radius: 4px; padding: 10px 14px; margin-top: 4px; line-height: 1.6; }
+  .note-rejected { background: var(--rust-light); color: var(--rust); }
+  .note-hold { background: var(--amber-light); color: var(--amber); }
+  .note-completed { background: var(--green-light); color: var(--green); }
+  .note-approved { background: var(--green-light); color: var(--green); }
+
+  /* DETAILS */
+  .req-details { padding: 20px 22px; border-top: 1px solid var(--border); display: none; }
+  .req-details.open { display: block; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; margin-bottom: 16px; }
+  .dl { }
+  .dl dt { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 3px; }
+  .dl dd { font-size: 13px; line-height: 1.5; }
+  .desc-block { background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 13px 15px; font-size: 13px; line-height: 1.7; margin-bottom: 12px; }
+  .sub-heading { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; }
+
+  /* EMPTY */
+  .empty-state { text-align: center; padding: 80px 20px; }
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; margin-bottom: 8px; }
+  .empty-state p { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+  .btn { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase; padding: 11px 26px; border-radius: 4px; border: none; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.18s; }
+  .btn-primary { background: var(--rust); color: var(--white); }
+  .btn-primary:hover { background: #a93226; }
+
+  @media(max-width:640px) {
+    .topband, .page-header, .page-body { padding-left: 20px; padding-right: 20px; }
+    .req-card-top { flex-wrap: wrap; }
+    .req-right { flex-direction: row; align-items: center; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .sso-badge { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topband">
+  <div class="brand">QIU <span>Digital Comms</span></div>
+  <nav>
+    <a href="index.html">New Request</a>
+    <a href="my-requests.html" class="active">My Requests</a>
+    <a href="approval.html">Approvals</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+  <div class="sso-badge"><div class="sso-dot"></div>Google SSO</div>
+</div>
+
+<div class="page-header">
+  <div class="tag">Staff Portal</div>
+  <h1>My Requests</h1>
+  <p>Track the current status and progress of all your job requests.</p>
+</div>
+
+<div class="page-body">
+  <div class="poc-notice">
+    <strong>POC Note:</strong> In production, this page will automatically filter to show only your own requests via Google SSO. For this demo, all submitted requests are visible.
+  </div>
+  <div class="req-list" id="reqList"></div>
+</div>
+
+<script>
+  const CAT_LABELS = { printed:'🖨️ Printed', digital:'📱 Digital', website:'🌐 Website', event:'📸 Event', video:'🎬 Video', other:'✦ Other' };
+  const STATUS_LABELS = { pending_approval:'Awaiting HOD Approval', approved:'HOD Approved', rejected:'Rejected', in_progress:'In Progress', on_hold:'On Hold', completed:'Completed' };
+
+  const STAGES = [
+    { label: 'Submitted',    icon: '📋' },
+    { label: 'HOD Approval', icon: '👤' },
+    { label: 'In Progress',  icon: '⚙️' },
+    { label: 'Under Review', icon: '🔍' },
+    { label: 'Completed',    icon: '✓'  },
+  ];
+
+  function getActiveStage(status) {
+    // returns index of current active stage (0-based)
+    if (status === 'pending_approval') return 1;
+    if (status === 'approved') return 2;
+    if (status === 'in_progress') return 2;
+    if (status === 'on_hold') return 2;
+    if (status === 'completed') return 4;
+    if (status === 'rejected') return 1;
+    return 0;
+  }
+
+  function buildStageRow(status) {
+    const active = getActiveStage(status);
+    return STAGES.map((s, i) => {
+      let cls = '', dotContent = s.icon;
+      if (status === 'rejected' && i === 1) { cls = 'rejected-dot'; dotContent = '✕'; }
+      else if (i < active) { cls = 'done'; dotContent = '✓'; }
+      else if (i === active) {
+        if (status === 'on_hold') { cls = 'hold'; dotContent = '⏸'; }
+        else { cls = 'active'; dotContent = s.icon; }
+      }
+      return `<div class="stage ${cls}"><div class="stage-dot">${dotContent}</div><div class="stage-label">${s.label}</div></div>`;
+    }).join('');
+  }
+
+  function getStatusNote(status) {
+    const notes = {
+      rejected: `<div class="status-note note-rejected">⚠️ Your request was not endorsed by your HOD. Please speak with them directly, or submit a revised request.</div>`,
+      on_hold: `<div class="status-note note-hold">⏸ Your request is temporarily on hold. Our team may reach out via your acknowledgement email for clarification — please check your inbox and <strong>reply to that same email thread</strong>.</div>`,
+      completed: `<div class="status-note note-completed">✓ This project is complete! Please collect your deliverable from the Digital Communications office.</div>`,
+      approved: `<div class="status-note note-approved">✓ Your request has been endorsed by your HOD and is queued for our team to begin work.</div>`,
+      in_progress: `<div class="status-note note-approved" style="background:var(--indigo-light);color:var(--indigo);">⚙️ Our team is currently working on your request. If we need any clarification, we'll reach out via your acknowledgement email — keep an eye on that thread.</div>`,
+    };
+    return notes[status] || '';
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('en-MY', { day:'numeric', month:'short', year:'numeric' });
+  }
+
+  // Builds a Gmail compose URL instead of mailto: so clicking always opens
+  // Gmail in the browser (or the Gmail app on mobile) rather than Outlook
+  // or the OS default mail client.
+  //
+  // The subject format [REF] Job Request — Dept is intentionally fixed.
+  // This is what threads all replies together in Gmail's conversation view.
+  // The dev team should use the same subject on all outbound system emails
+  // (acknowledgement, status updates) so everything chains in one thread.
+  function gmailHref(ref, dept, purpose) {
+    const to  = 'digitalcomms@qiu.edu.my';
+    const su  = `[${ref}] Job Request — ${dept}`;
+    const bod =
+      `Hi Digital Comms team,\n\n` +
+      `This is a follow-up on my request:\n\n` +
+      `Reference: ${ref}\n` +
+      `Department: ${dept}\n` +
+      `Request: ${(purpose || '').substring(0, 80)}${(purpose||'').length > 80 ? '…' : ''}\n\n` +
+      `[Write your message here]\n\nThank you.`;
+
+    // Gmail compose URL — works in browser and deep-links to Gmail app on Android/iOS
+    return `https://mail.google.com/mail/?view=cm&fs=1` +
+           `&to=${encodeURIComponent(to)}` +
+           `&su=${encodeURIComponent(su)}` +
+           `&body=${encodeURIComponent(bod)}`;
+  }
+
+  function openGmail(ref, dept, purpose, event) {
+    event.stopPropagation();
+    window.open(gmailHref(ref, dept, purpose), '_blank', 'noopener');
+  }
+
+  let openCard = null;
+
+  function toggleCard(i) {
+    const pw = document.getElementById(`pw-${i}`);
+    const dw = document.getElementById(`dw-${i}`);
+    const cv = document.getElementById(`cv-${i}`);
+    if (openCard !== null && openCard !== i) {
+      document.getElementById(`pw-${openCard}`)?.classList.remove('open');
+      document.getElementById(`dw-${openCard}`)?.classList.remove('open');
+      document.getElementById(`cv-${openCard}`)?.classList.remove('rotated');
+    }
+    const wasOpen = pw.classList.contains('open');
+    pw.classList.toggle('open', !wasOpen);
+    dw.classList.toggle('open', !wasOpen);
+    cv.classList.toggle('rotated', !wasOpen);
+    openCard = wasOpen ? null : i;
+  }
+
+  function render() {
+    const requests = JSON.parse(localStorage.getItem('qiu_requests') || '[]');
+    const list = document.getElementById('reqList');
+
+    if (!requests.length) {
+      list.innerHTML = `<div class="empty-state"><div class="icon">📋</div><h3>No requests yet</h3><p>You haven't submitted any job requests. Start one now.</p><a href="index.html" class="btn btn-primary">Submit a Request</a></div>`;
+      return;
+    }
+
+    list.innerHTML = requests.map((r, i) => `
+      <div class="req-card">
+        <div class="req-card-top" onclick="toggleCard(${i})">
+          <div class="req-ref-col">
+            <span class="req-ref">${r.ref}</span>
+            <span class="req-date">${fmtDate(r.submittedAt)}</span>
+          </div>
+          <div class="req-meta">
+            <div class="req-title">${r.jobPurpose?.substring(0,75)}${(r.jobPurpose?.length||0)>75?'…':''}</div>
+            <div class="req-sub">
+              <span class="cat-pill">${CAT_LABELS[r.category]||r.category}</span>
+              <span>Due: ${fmtDate(r.dueDate)}</span>
+
+            </div>
+          </div>
+          <div class="req-right">
+            <span class="status-badge s-${r.status}">${STATUS_LABELS[r.status]||r.status}</span>
+            <button class="email-btn" onclick="openGmail('${r.ref}', '${r.department.replace(/'/g,"\\'")}', '${(r.jobPurpose||'').replace(/'/g,"\\'").substring(0,60)}', event)" title="Opens Gmail — do not change the subject line so replies stay in one thread">
+              <svg width="13" height="10" viewBox="0 0 13 10" fill="none" style="flex-shrink:0"><path d="M0 1.5C0 .67.67 0 1.5 0h10C12.33 0 13 .67 13 1.5v7c0 .83-.67 1.5-1.5 1.5h-10C.67 10 0 9.33 0 8.5v-7zm1 .61V8.5c0 .28.22.5.5.5h10c.28 0 .5-.22.5-.5V2.11L6.5 6 1 2.11zM1.88 1L6.5 4.73 11.12 1H1.88z" fill="currentColor"/></svg>
+              Contact Us
+            </button>
+            <div class="email-tip">Keep the subject line intact — it threads all replies together.</div>
+            <span class="chevron" id="cv-${i}">▾</span>
+          </div>
+        </div>
+
+        <div class="progress-wrap" id="pw-${i}">
+          <div class="progress-title">Request Progress</div>
+          <div class="stages">${buildStageRow(r.status)}</div>
+          ${getStatusNote(r.status)}
+        </div>
+
+        <div class="req-details" id="dw-${i}">
+          <div class="detail-grid">
+            <div class="dl"><dt>Requested By</dt><dd>${r.requestedBy}</dd></div>
+            <div class="dl"><dt>Department</dt><dd>${r.department}</dd></div>
+            <div class="dl"><dt>Request Date</dt><dd>${fmtDate(r.requestedDate)}</dd></div>
+            <div class="dl"><dt>Due Date</dt><dd>${fmtDate(r.dueDate)}</dd></div>
+            <div class="dl"><dt>Category</dt><dd>${CAT_LABELS[r.category]||r.category}${r.subtypes?.length?' — '+r.subtypes.join(', '):''}</dd></div>
+            ${r.size?`<div class="dl"><dt>Specs</dt><dd>${r.size}${r.colour?' · '+r.colour:''}${r.bleed?' · '+r.bleed:''}</dd></div>`:''}
+          </div>
+          <div class="sub-heading">Job Purpose</div>
+          <div class="desc-block">${r.jobPurpose}</div>
+          <div class="sub-heading">Project Description</div>
+          <div class="desc-block">${r.description}</div>
+          ${r.references?`<div class="sub-heading">References</div><div class="desc-block">${r.references}</div>`:''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  render();
+</script>
+</body>
+</html>

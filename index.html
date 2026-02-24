@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Request — QIU Digital Communications</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0d; --paper: #f5f2ee; --rust: #c0392b; --rust-light: #f5e8e6;
+    --gold: #c9a84c; --muted: #7a7570; --border: #d6d0c8; --white: #fff;
+    --amber: #b45309; --amber-light: #fef3c7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); }
+
+  .topband {
+    background: var(--ink); color: var(--paper); padding: 0 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; position: sticky; top: 0; z-index: 20;
+  }
+  .brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .brand span { color: var(--gold); }
+  nav { display: flex; gap: 2px; }
+  nav a {
+    color: rgba(255,255,255,0.55); text-decoration: none; font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 13px;
+    border-radius: 3px; transition: all 0.18s;
+  }
+  nav a:hover { color: var(--paper); background: rgba(255,255,255,0.07); }
+  nav a.active { color: var(--gold); background: rgba(201,168,76,0.1); }
+  .sso-badge {
+    font-size: 11px; color: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.1); padding: 4px 10px;
+    border-radius: 20px; display: flex; align-items: center; gap: 6px;
+  }
+  .sso-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; flex-shrink: 0; }
+
+  .hero {
+    padding: 52px 40px 40px; background: linear-gradient(135deg, #181614 0%, #2a231e 100%);
+    color: var(--paper); position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: 'REQUEST'; font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 120px; color: rgba(255,255,255,0.025); position: absolute;
+    right: 0; top: -10px; line-height: 1; pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.35);
+    padding: 4px 12px; border-radius: 2px; margin-bottom: 18px;
+  }
+  .hero h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(24px,4vw,42px); margin-bottom: 12px; }
+  .hero p { font-size: 14px; font-weight: 300; opacity: 0.6; max-width: 460px; line-height: 1.7; }
+
+  .notice {
+    background: var(--amber-light); border-left: 3px solid var(--amber);
+    margin: 28px 40px 0; padding: 12px 18px; font-size: 13px; color: var(--amber); border-radius: 0 4px 4px 0;
+  }
+
+  .form-wrap { max-width: 840px; margin: 0 auto; padding: 36px 40px 80px; }
+
+  .section-label {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 10px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::before { content: ''; width: 6px; height: 6px; background: var(--rust); border-radius: 50%; flex-shrink: 0; }
+  .form-section { margin-bottom: 36px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  input[type="text"], input[type="email"], input[type="date"], select, textarea {
+    width: 100%; padding: 10px 13px; background: var(--white); border: 1px solid var(--border);
+    border-radius: 4px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--rust); box-shadow: 0 0 0 3px rgba(192,57,43,0.08); }
+  textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .cat-card {
+    border: 1.5px solid var(--border); border-radius: 6px; padding: 14px 10px;
+    cursor: pointer; transition: all 0.16s; background: var(--white); text-align: center;
+  }
+  .cat-card:hover { border-color: var(--rust); background: #fdf7f6; }
+  .cat-card.selected { border-color: var(--rust); background: var(--rust); color: var(--white); }
+  .cat-icon { font-size: 20px; margin-bottom: 6px; }
+  .cat-name { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 11px; line-height: 1.3; }
+  .cat-sub { font-size: 10px; opacity: 0.55; margin-top: 3px; }
+
+  .subtypes { display: none; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
+  .subtypes.show { display: flex; }
+  .subtype-chip {
+    border: 1px solid var(--border); border-radius: 20px; padding: 5px 13px;
+    font-size: 12px; cursor: pointer; background: var(--white); transition: all 0.14s;
+  }
+  .subtype-chip:hover { border-color: var(--rust); color: var(--rust); }
+  .subtype-chip.selected { background: var(--ink); color: var(--white); border-color: var(--ink); }
+
+  .specs-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; }
+
+  .submit-area {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 26px; border-top: 1px solid var(--border); margin-top: 32px;
+  }
+  .submit-note { font-size: 12px; color: var(--muted); max-width: 360px; line-height: 1.6; }
+  .submit-note strong { color: var(--ink); }
+  .btn { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 30px; border-radius: 4px; border: none; cursor: pointer; transition: all 0.18s; text-decoration: none; display: inline-block; }
+  .btn-primary { background: var(--rust); color: var(--white); }
+  .btn-primary:hover { background: #a93226; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(192,57,43,0.3); }
+  .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--border); }
+  .btn-outline:hover { border-color: var(--ink); }
+
+  .modal { display: none; position: fixed; inset: 0; background: rgba(15,14,13,0.82); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  .modal.show { display: flex; }
+  .modal-card {
+    background: var(--white); border-radius: 10px; padding: 46px 50px;
+    max-width: 460px; width: 92%; text-align: center;
+    animation: popIn 0.28s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  @keyframes popIn { from { transform: scale(0.88); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-icon { width: 58px; height: 58px; background: #e8f5ee; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; font-size: 24px; }
+  .modal-card h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; margin-bottom: 8px; }
+  .modal-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .ref-badge { display: inline-block; font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 700; color: var(--rust); background: var(--rust-light); padding: 8px 22px; border-radius: 4px; margin: 14px 0 20px; letter-spacing: 0.08em; }
+  .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<div class="topband">
+  <div class="brand">QIU <span>Digital Comms</span></div>
+  <nav>
+    <a href="index.html" class="active">New Request</a>
+    <a href="my-requests.html">My Requests</a>
+    <a href="approval.html">Approvals</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+  <div class="sso-badge"><div class="sso-dot"></div>Google SSO</div>
+</div>
+
+<div class="hero">
+  <div class="hero-tag">Digital Communications — QIU</div>
+  <h1>Job Request Form</h1>
+  <p>Submit your media, design, or digital request. Your HOD will be notified for endorsement before our team processes it.</p>
+</div>
+
+<div class="notice">
+  <strong>Please note:</strong> We require at least <strong>3 working days</strong> for COO approval and <strong>10–14 working days</strong> to complete. Merchandise & T-shirt requests need COO approval.
+</div>
+
+<div class="form-wrap">
+  <form id="requestForm" onsubmit="submitForm(event)">
+
+    <div class="form-section">
+      <div class="section-label">General Information</div>
+      <div class="grid-2">
+        <div class="field"><label>Requested By *</label><input type="text" id="requestedBy" required placeholder="Your full name"></div>
+        <div class="field"><label>Email Address *</label><input type="email" id="email" required placeholder="your@qiu.edu.my"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Faculty / Department *</label>
+          <select id="department" required>
+            <option value="">Select department…</option>
+            <option>Faculty of Computing & Technology</option>
+            <option>Faculty of Business & Management</option>
+            <option>Faculty of Health Sciences</option>
+            <option>Faculty of Engineering</option>
+            <option>Faculty of Education</option>
+            <option>Human Resources</option>
+            <option>Marketing & Communications</option>
+            <option>Student Affairs</option>
+            <option>Registry</option>
+            <option>Finance</option>
+            <option>Office of the Vice Chancellor</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>HOD / Superior Email *</label><input type="email" id="hodEmail" required placeholder="hod@qiu.edu.my"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Requested Date *</label><input type="date" id="requestedDate" required></div>
+        <div class="field"><label>Final Due Date *</label><input type="date" id="dueDate" required></div>
+      </div>
+      <div class="field"><label>Job Purpose *</label><textarea id="jobPurpose" required placeholder="Briefly describe the purpose of this request…"></textarea></div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Request Category</div>
+      <div class="cat-grid">
+        <div class="cat-card" onclick="selectCat(this,'printed')"><div class="cat-icon">🖨️</div><div class="cat-name">Printed Media</div><div class="cat-sub">Posters, banners, flyers</div></div>
+        <div class="cat-card" onclick="selectCat(this,'digital')"><div class="cat-icon">📱</div><div class="cat-name">Digital Media</div><div class="cat-sub">Social, ads, digital</div></div>
+        <div class="cat-card" onclick="selectCat(this,'website')"><div class="cat-icon">🌐</div><div class="cat-name">Website</div><div class="cat-sub">Updates, new pages</div></div>
+        <div class="cat-card" onclick="selectCat(this,'event')"><div class="cat-icon">📸</div><div class="cat-name">Event Coverage</div><div class="cat-sub">Photo & video</div></div>
+        <div class="cat-card" onclick="selectCat(this,'video')"><div class="cat-icon">🎬</div><div class="cat-name">Video Production</div><div class="cat-sub">Promo, reels, talks</div></div>
+        <div class="cat-card" onclick="selectCat(this,'other')"><div class="cat-icon">✦</div><div class="cat-name">Other</div><div class="cat-sub">Misc. requests</div></div>
+      </div>
+      <input type="hidden" id="category">
+
+      <div class="subtypes" id="sub-printed">
+        <span class="subtype-chip" onclick="toggleSub(this)">Advertisement</span><span class="subtype-chip" onclick="toggleSub(this)">Banner</span><span class="subtype-chip" onclick="toggleSub(this)">Bunting</span><span class="subtype-chip" onclick="toggleSub(this)">Brochure / Flyer</span><span class="subtype-chip" onclick="toggleSub(this)">Booklet / Newsletter</span><span class="subtype-chip" onclick="toggleSub(this)">Corporate Signage</span><span class="subtype-chip" onclick="toggleSub(this)">Exhibition Booth Design</span><span class="subtype-chip" onclick="toggleSub(this)">Logo Design</span><span class="subtype-chip" onclick="toggleSub(this)">Merchandise Design ⚠️</span><span class="subtype-chip" onclick="toggleSub(this)">Poster</span><span class="subtype-chip" onclick="toggleSub(this)">T-Shirt ⚠️ COO Approval</span>
+      </div>
+      <div class="subtypes" id="sub-digital">
+        <span class="subtype-chip" onclick="toggleSub(this)">Digital Ad Campaign</span><span class="subtype-chip" onclick="toggleSub(this)">Social Media Promo</span><span class="subtype-chip" onclick="toggleSub(this)">Email Blast Design</span><span class="subtype-chip" onclick="toggleSub(this)">Digital Backdrop</span><span class="subtype-chip" onclick="toggleSub(this)">Certificates (Competition)</span>
+      </div>
+      <div class="subtypes" id="sub-website">
+        <span class="subtype-chip" onclick="toggleSub(this)">Website Update / Amendment</span><span class="subtype-chip" onclick="toggleSub(this)">Internal Event Page</span><span class="subtype-chip" onclick="toggleSub(this)">External Event Page</span><span class="subtype-chip" onclick="toggleSub(this)">New Page / Section</span>
+      </div>
+      <div class="subtypes" id="sub-event">
+        <span class="subtype-chip" onclick="toggleSub(this)">Photo & Video</span><span class="subtype-chip" onclick="toggleSub(this)">Photo Only</span><span class="subtype-chip" onclick="toggleSub(this)">Video Only</span><span class="subtype-chip" onclick="toggleSub(this)">Live Streaming</span>
+      </div>
+      <div class="subtypes" id="sub-video">
+        <span class="subtype-chip" onclick="toggleSub(this)">Promotional Video</span><span class="subtype-chip" onclick="toggleSub(this)">Social Media Reel</span><span class="subtype-chip" onclick="toggleSub(this)">Talk / Webinar Recording</span><span class="subtype-chip" onclick="toggleSub(this)">Animation</span>
+      </div>
+      <div class="subtypes" id="sub-other">
+        <span class="subtype-chip" onclick="toggleSub(this)">Miscellaneous</span>
+      </div>
+    </div>
+
+    <div class="form-section" id="artworkSection" style="display:none">
+      <div class="section-label">Artwork Specifications</div>
+      <div class="specs-row">
+        <div class="field"><label>Size / Measurement</label><input type="text" id="size" placeholder="e.g. A4, 3×6ft, 1080×1080px"></div>
+        <div class="field"><label>Colour / B&W</label>
+          <select id="colour"><option value="">Select…</option><option>Full Colour</option><option>Black & White</option><option>Spot Colour</option></select>
+        </div>
+        <div class="field"><label>Printing Bleed</label>
+          <select id="bleed"><option value="">Select…</option><option>Required (3mm)</option><option>Not Required</option><option>Unsure</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Project Description</div>
+      <div class="field"><label>Detailed Description *</label><textarea id="description" required style="min-height:130px" placeholder="Describe your project in detail — content, tone, references, specific requirements…"></textarea></div>
+      <div class="field"><label>Reference Links / Additional Notes</label><input type="text" id="references" placeholder="Drive links, URLs, or extra notes…"></div>
+    </div>
+
+    <div class="submit-area">
+      <div class="submit-note">By submitting, your <strong>HOD will receive an approval request</strong>. Digital Comms can track it immediately.</div>
+      <button type="submit" class="btn btn-primary">Submit Request →</button>
+    </div>
+  </form>
+</div>
+
+<div class="modal" id="successModal">
+  <div class="modal-card">
+    <div class="modal-icon">✓</div>
+    <h2>Request Submitted!</h2>
+    <p>Your request has been logged. Your HOD has been notified for endorsement.</p>
+    <div class="ref-badge" id="refDisplay">QIU-2025-0001</div>
+    <p style="font-size:12px">Save your reference number. You can track your request status under <strong>My Requests</strong>.</p>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="window.location.href='my-requests.html'">View My Requests</button>
+      <button class="btn btn-outline" onclick="window.location.reload()">Submit Another</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('requestedDate').value = new Date().toISOString().split('T')[0];
+
+  function selectCat(el, cat) {
+    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('category').value = cat;
+    document.querySelectorAll('.subtypes').forEach(s => s.classList.remove('show'));
+    document.getElementById('sub-' + cat)?.classList.add('show');
+    document.getElementById('artworkSection').style.display = cat === 'printed' ? 'block' : 'none';
+  }
+
+  function toggleSub(el) { el.classList.toggle('selected'); }
+
+  function submitForm(e) {
+    e.preventDefault();
+    if (!document.getElementById('category').value) { alert('Please select a request category.'); return; }
+
+    const count = parseInt(localStorage.getItem('qiu_count') || '0') + 1;
+    localStorage.setItem('qiu_count', count);
+    const refNum = `QIU-${new Date().getFullYear()}-${String(count).padStart(4,'0')}`;
+    const subtypes = [...document.querySelectorAll('.subtype-chip.selected')].map(c => c.textContent.trim());
+
+    const req = {
+      ref: refNum,
+      requestedBy: document.getElementById('requestedBy').value,
+      email: document.getElementById('email').value,
+      department: document.getElementById('department').value,
+      hodEmail: document.getElementById('hodEmail').value,
+      requestedDate: document.getElementById('requestedDate').value,
+      dueDate: document.getElementById('dueDate').value,
+      jobPurpose: document.getElementById('jobPurpose').value,
+      category: document.getElementById('category').value,
+      subtypes,
+      size: document.getElementById('size').value,
+      colour: document.getElementById('colour').value,
+      bleed: document.getElementById('bleed').value,
+      description: document.getElementById('description').value,
+      references: document.getElementById('references').value,
+      status: 'pending_approval',
+      assignedTo: null,
+      internalNotes: '',
+      submittedAt: new Date().toISOString(),
+      timeline: [{ action: 'Request submitted', by: document.getElementById('requestedBy').value, date: new Date().toISOString() }]
+    };
+
+    const all = JSON.parse(localStorage.getItem('qiu_requests') || '[]');
+    all.unshift(req);
+    localStorage.setItem('qiu_requests', JSON.stringify(all));
+    document.getElementById('refDisplay').textContent = refNum;
+    document.getElementById('successModal').classList.add('show');
+  }
+</script>
+</body>
+</html>
