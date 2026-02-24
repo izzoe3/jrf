@@ -1,261 +1,211 @@
 # QIU Digital Communications — Job Request System
-### Proof of Concept · Developer Handover Document
+### Proof of Concept · Handover Brief for Development Team
 
 ---
 
-## Overview
+## What This Is
 
-This POC demonstrates the full workflow for the QIU Digital Communications Job Request system. It is built as a static HTML/CSS/JS prototype using `localStorage` to simulate a database. All logic, layout, and UX decisions are final — the development team's task is to rebuild this with a proper backend.
+This is a proof of concept for the Digital Communications Job Request Form (JRF) at Quest International University. It replaces the current paper-based process where staff fill in a physical form to request design, media, video, or web work from the Digital Comms team.
 
-**Open `index.html` in any browser. No build tools, no installs required.**
+The POC is built as static HTML/CSS/JS files with no backend. All data is simulated using the browser's `localStorage`. The purpose of this document is to describe what the system needs to do — the development team is best placed to advise on how to build it.
+
+**To run the POC:** Open any of the four HTML files directly in a browser. No installs required.
 
 ---
 
 ## The Four Pages
 
-| File | Role | Who sees it |
-|------|------|------------|
-| `index.html` | Submit a job request | All QIU staff |
-| `my-requests.html` | Track your own requests | Staff (requestor) |
-| `approval.html` | Endorse or reject requests | HOD / Dean |
-| `dashboard.html` | Full work tracker & management | Digital Comms team |
+| File | What it does | Who uses it |
+|------|-------------|-------------|
+| `index.html` | Staff submit a job request | All QIU staff |
+| `my-requests.html` | Staff track their own requests | The person who submitted |
+| `approval.html` | HOD reviews and endorses requests | Head of Department / Dean |
+| `dashboard.html` | Team views all requests, assigns work, updates stages | Digital Comms team |
 
 ---
 
-## Workflow
+## How the Workflow Should Work
 
 ```
-Staff submits form (index.html)
+1. Staff submits a job request via index.html
         │
-        ├─► Request immediately visible on dashboard.html [status: Awaiting Approval]
+        ├──► Request is immediately visible on the team dashboard
+        │    with status: Awaiting Approval
         │
-        └─► HOD receives email notification → opens approval.html
+        └──► HOD receives a notification to review and endorse the request
                     │
-              Approve / Reject
+             HOD approves or rejects
                     │
-        ┌───────────┴────────────────┐
-     Approved                    Rejected
-        │                            │
-        │                    Staff sees "Rejected" in my-requests.html
+        ┌───────────┴──────────────────┐
+     Approved                       Rejected
+        │                               │
+        │                    Staff sees Rejected status
+        │                    on my-requests.html.
+        │                    No email notification sent —
+        │                    HOD communicates directly with their staff.
         │
-  Digital Comms team sees status update on dashboard.html
+     Digital Comms team sees the updated status on dashboard.html
         │
-  Team assigns to a member → moves through stages:
-  Approved → In Progress → On Hold (optional) → Completed
+     Team assigns the request to a team member
         │
-  Staff tracks progress in real-time via my-requests.html
+     Team moves it through stages as work progresses:
+     Approved → In Progress → On Hold (if needed) → Completed
+        │
+     Staff can see their current stage at any time on my-requests.html
 ```
 
 ---
 
-## Authentication — Google SSO
+## Authentication
 
-**This POC has no login.** All pages are open for demo purposes.
+This POC has no login — all pages are open for demo purposes.
 
-In production, implement Google SSO with the following role-based access:
+In the live system, authentication should be handled via **Google SSO** since QIU runs on Google Workspace and all users have institutional Google accounts. We would like the dev team's input on the best approach, but our expectations are:
 
-| Role | Determined by | Pages accessible |
-|------|--------------|-----------------|
-| **Staff (Requestor)** | Any `@qiu.edu.my` Google account | `index.html`, `my-requests.html` |
-| **HOD / Dean** | Google group membership (e.g. `hods@qiu.edu.my`) | All staff pages + `approval.html` |
-| **Digital Comms Team** | Google group membership (e.g. `digitalcomms@qiu.edu.my`) | All pages + `dashboard.html` |
+- Staff should only see their own requests on `my-requests.html`
+- HODs should only see requests where they are listed as the endorsing HOD on `approval.html`
+- The Digital Comms dashboard should be restricted to the Digital Comms team only
+- The team member dropdown on the dashboard (for assigning requests) should pull from the Digital Comms team's Google Workspace accounts rather than a hardcoded list
 
-**Key SSO behaviours:**
-- `my-requests.html` — filter requests by `email === currentUser.email`
-- `approval.html` — filter requests where `hodEmail === currentUser.email`
-- `dashboard.html` — show all requests; team member list in "Assign" dropdown should be populated from Google Workspace directory API
-- HOD approval emails should contain a one-click approve/reject link (tokenised, no login required)
+**Useful starting point:**
+- [Google Workspace — Sign In with Google](https://developers.google.com/identity/gsi/web/guides/overview)
+- [Google Workspace Admin — Groups and access control](https://support.google.com/a/answer/9400082)
 
 ---
 
-## Data Model
+## Request Statuses
 
-Each request object should map to a database record:
+There are six statuses in the system. Three are visible to the requestor, three are internal only.
 
-```js
-{
-  ref: "QIU-2025-0001",          // auto-generated, sequential per year
-  requestedBy: "Ahmad Fauzi",    // from Google SSO display name
-  email: "ahmad@qiu.edu.my",     // from Google SSO email
-  department: "Marketing",
-  hodEmail: "hod@qiu.edu.my",    // determines who sees approval.html
-  requestedDate: "2025-01-08",
-  dueDate: "2025-01-28",
-  jobPurpose: "...",
-  category: "digital",           // printed | digital | website | event | video | other
-  subtypes: ["Social Media Promo", "Digital Ad Campaign"],
-
-  // Printed media only
-  size: "A1",
-  colour: "Full Colour",
-  bleed: "Required (3mm)",
-
-  description: "...",
-  references: "...",
-
-  status: "in_progress",         // pending_approval | approved | rejected | in_progress | on_hold | completed
-  assignedTo: "Amirah Zainudin", // Digital Comms team member
-  internalNotes: "...",          // Only visible to Digital Comms team
-
-  submittedAt: "2025-01-08T14:10:00Z",
-  approvedAt: "2025-01-09T10:30:00Z",
-
-  timeline: [                    // append-only event log
-    { action: "Request submitted", by: "Ahmad Fauzi", date: "..." },
-    { action: "Endorsed by HOD",   by: "HOD",         date: "..." },
-    { action: "Assigned to Amirah Zainudin", by: "Team", date: "..." },
-    { action: "Status changed to: In Progress", by: "Team", date: "..." }
-  ]
-}
-```
+| Status | Visible to requestor? | Meaning |
+|--------|----------------------|---------|
+| Awaiting Approval | ✅ Yes | Submitted, waiting for HOD endorsement |
+| Approved | ✅ Yes | HOD has endorsed, queued for the team |
+| In Progress | ✅ Yes | Team is actively working on it |
+| On Hold | ❌ Internal only | Team has paused work — team communicates via email thread |
+| Rejected | ❌ Internal only | HOD did not endorse — HOD communicates with their staff directly |
+| Completed | ✅ Yes | Work is done |
 
 ---
 
-## Email Architecture — Threaded Acknowledgement System
+## Email — Threaded Acknowledgement System
 
-### Design principle
-The JRF system has two jobs and two jobs only:
+### The principle
 
-| System | Purpose |
-|--------|---------|
-| **JRF portal** | Submit requests · Track status |
-| **Email thread** | All communication — clarifications, queries, updates |
+The JRF portal has two jobs only:
 
-There are no contact buttons in the portal. Requestors are directed to reply to their acknowledgement email for everything else. This eliminates duplicate channels and inbox clutter.
+| | |
+|--|--|
+| **JRF portal** | Submit a request · Track its status |
+| **Email thread** | All communication — additional info, clarifications, updates |
+
+There are no contact or email buttons in the portal. All communication happens via a single email thread that is automatically created when a request is submitted.
+
+### What we need the email thread to do
+
+**On submission**, an acknowledgement email is sent automatically from `digitalcomms@qiu.edu.my` to the requestor. This email starts the thread and should include:
+
+- Their reference number (e.g. `QIU-2025-0001`)
+- A summary of what they submitted
+- A link to `my-requests.html` to track their status
+- A clear instruction that **this email thread is their communication channel** — if they need to add information or ask anything, they reply here
+
+Example subject format: `[QIU-2025-0001] Job Request — Poster · Faculty of Health Sciences`
+
+**When a request reaches one of the three public stages**, an automated reply is sent into the same thread:
+
+| Stage | Message to requestor |
+|-------|---------------------|
+| Approved | Their request has been endorsed by their HOD and is queued for the team |
+| In Progress | The team has started work |
+| Completed | The project is done — collect from Digital Comms office |
+
+**When the team needs clarification**, they reply to the thread from the shared `digitalcomms@qiu.edu.my` inbox. The requestor replies back in the same thread. Everything stays in one conversation.
+
+### What this should look like in Gmail
+
+```
+📧 [QIU-2025-0001] Job Request — Poster · Faculty of Health Sciences  (5)
+   │
+   ├── Digital Comms   "Thank you for your submission…"          Mon 9:02am
+   ├── Staff           "Just to add — the event is outdoor…"     Mon 11:30am
+   ├── Digital Comms   "Noted, thank you for the update."        Mon 2:15pm
+   ├── Digital Comms   "Your request has been approved…"         Tue 9:00am
+   └── Digital Comms   "We have started work on your request…"   Thu 10:30am
+```
+
+### Question for the development team
+
+Since QIU is entirely on Google Workspace, we understand that using the **Gmail API Thread ID** may be more reliable than relying on email headers (`In-Reply-To`, `References`) alone to maintain threading. We'd like the dev team's recommendation on the best approach for our setup.
+
+**Useful references:**
+- [Gmail API — Sending messages in a thread](https://developers.google.com/gmail/api/guides/sending#sending_a_reply)
+- [Gmail API — Thread resource](https://developers.google.com/gmail/api/reference/rest/v1/users.threads)
+- [Google Workspace — Gmail API overview](https://developers.google.com/gmail/api/guides)
 
 ---
 
-### How the thread works
+## What the Requestor Sees (my-requests.html)
 
-**Step 1 — Submission triggers the acknowledgement email (automated)**
-
-Sent immediately from `digitalcomms@qiu.edu.my` to the requestor. This email is the anchor of the entire thread.
-
-```
-To:      staff@qiu.edu.my
-Subject: [QIU-2025-0001] Job Request — Poster · Faculty of Health Sciences
-
-Hi [Name],
-
-Thank you for your submission. Your reference number is QIU-2025-0001.
-
-You can track your request status at: [link to my-requests.html]
-
-IMPORTANT: This email is your communication channel for this request.
-If you have any additional information, files, or queries — please reply
-directly to this email. Do not submit a new request or send a separate email.
-
-Our team will be in touch via this thread if we need clarification.
-We will also update you here when your request is Approved, In Progress,
-and Completed.
-
-Digital Communications
-Quest International University
-```
-
-**Step 2 — Status update emails (3 public stages, automated)**
-
-The backend sends these as replies to the original thread using `In-Reply-To` and `References` headers. The requestor sees them appear inside the same Gmail conversation — no new thread starts.
-
-| Status change | Email sent to requestor? | Message |
-|---|---|---|
-| Approved | ✅ Yes — reply to thread | "Your request has been endorsed by your HOD and is queued for our team." |
-| In Progress | ✅ Yes — reply to thread | "Our team has started work on your request." |
-| Completed | ✅ Yes — reply to thread | "Your project is ready. Please collect from Digital Comms." |
-| Rejected | ❌ No | HOD handles communication directly with their staff |
-| On Hold | ❌ No | Team member reaches out via the thread manually |
-| Assigned / Reassigned | ❌ No | Internal only |
-
-**Step 3 — Communication flows through the thread**
-
-- **Requestor needs to add info or ask something** → they reply to the acknowledgement email
-- **Digital Comms needs clarification** → team member replies to the same thread from the shared inbox
-- **Everything stays in one place** — one thread per request, for both parties
+- A list of all their submitted requests
+- For each request: reference number, category, due date, current status
+- A 5-step progress tracker showing where their request is in the process
+- A contextual message depending on their current stage (e.g. if on hold, they are told to check their email thread)
+- They do **not** see who internally is handling their request
+- They do **not** see On Hold or Rejected as labelled statuses — these are described in plain language in the status message
 
 ---
 
-### Critical implementation requirement — email threading headers
+## What the Team Sees (dashboard.html)
 
-All system-generated follow-up emails (status updates) must include these headers to guarantee they appear in the same thread:
-
-```
-Message-ID:  <unique-id@digitalcomms.qiu.edu.my>   ← on the acknowledgement
-References:  <ack-message-id@digitalcomms.qiu.edu.my>
-In-Reply-To: <ack-message-id@digitalcomms.qiu.edu.my>
-Subject:     [QIU-2025-0001] Job Request — Poster · Faculty of Health Sciences
-```
-
-**Store the `Message-ID` of the acknowledgement email in the database at send time.** All subsequent automated emails for that request reference it. Use SendGrid, Nodemailer, or Google Workspace SMTP — all support custom headers.
-
-**The subject line must never be modified programmatically.** One character difference breaks threading.
+- All submitted requests, visible immediately even before HOD approval
+- List view and board (Kanban) view
+- Filter by status, search by name, department, category, or assignee
+- Click any request to open a detail panel showing:
+  - Full request details
+  - Assign or reassign to a team member
+  - Update the stage with one click
+  - Add internal notes (not visible to the requestor)
+  - A chronological activity timeline of all actions taken
 
 ---
 
-### What this looks like in the requestor's inbox
+## Data Captured per Request
 
-```
-📧 [QIU-2025-0001] Job Request — Poster · Faculty of Health Sciences   (4)
-   ├── Digital Comms   "Thank you for your submission…"        Jan 8
-   ├── Digital Comms   "Your request has been approved…"       Jan 9
-   ├── Digital Comms   "We've started work on your request…"   Jan 13
-   └── Digital Comms   "Your project is complete…"             Jan 22
-```
+For reference, here is everything the form currently captures:
 
-If the requestor replied to clarify something, their reply and the team's response appear in the same thread — clean, contextual, no separate emails.
+**Requestor details**
+- Full name, email, department, HOD email
 
----
+**Request details**
+- Requested date, due date, job purpose
+- Category: Printed Media / Digital Media / Website / Event Coverage / Video Production / Other
+- Sub-type (e.g. Poster, Social Media Promo, Website Update)
+- For print requests: size, colour, printing bleed
+- Detailed description, reference links
 
-## Dashboard Features (dashboard.html)
-
-### Work Tracker
-- **List view** — sortable table with all requests, status, assignee, due date
-- **Board view** — Kanban with columns: Awaiting Approval / Approved+Queue / In Progress / Completed
-- Click any row/card → slide-out detail drawer
-
-### Detail Drawer
-- Full request details
-- **Assign to team member** — dropdown of Digital Comms staff (production: Google Workspace API)
-- **Reassign** — change assignment at any time
-- **Stage buttons** — one-click status update
-- **Internal notes** — free text, not visible to requestor
-- **Activity timeline** — append-only log of all actions
-
-### Filtering
-- By status (tab buttons + sidebar links)
-- Full-text search across ref, name, department, category, assignee
+**System fields**
+- Auto-generated reference number (format: `QIU-YYYY-NNNN`)
+- Status, assigned team member, internal notes
+- Activity timeline (append-only log of every action)
 
 ---
 
-## Requestor Dashboard (my-requests.html)
+## Open Questions for the Development Team
 
-### Stage Progress Tracker
-5-step visual stepper shown on each request card:
-```
-Submitted → HOD Approval → In Progress → Under Review → Completed
-```
-States are colour-coded:
-- ✓ Done (green dot)
-- Active stage (red dot with glow)
-- On Hold (amber dot with ⏸)
-- Rejected (red dot with ✕, shown at HOD Approval step)
+We would appreciate the team's input on the following before build begins:
 
-### Assigned Team Member (optional visibility)
-When a request has been assigned, requestors can see who is handling it — first name + initials avatar. This gives confidence that someone owns their request.
+1. **Authentication** — What is the recommended approach for Google SSO role separation (staff vs HOD vs Digital Comms team) given our Google Workspace setup?
+
+2. **HOD approval flow** — In the POC, the HOD logs into the approval page. Should this instead be a tokenised one-click link in their notification email so they can approve without logging into a separate system?
+
+3. **Email threading** — Given that we are fully on Google Workspace and Gmail, is Gmail API Thread ID the right approach? Are there any limitations we should be aware of?
+
+4. **Reference number generation** — The POC uses a sequential `QIU-YYYY-NNNN` format. Is this straightforward to implement safely (without duplicates) in a concurrent system?
+
+5. **Team member list** — In the POC this is hardcoded. Can this be pulled live from Google Workspace Directory so it stays up to date automatically?
 
 ---
 
-## Tech Recommendations for Production
-
-| Layer | Recommendation |
-|-------|---------------|
-| Auth | Google OAuth 2.0 / Firebase Auth |
-| Backend | Node.js + Express or Firebase Functions |
-| Database | Firestore or PostgreSQL |
-| Email | SendGrid or Google Workspace SMTP |
-| Frontend | Vue 3 or React (keep the same design system) |
-| Hosting | Firebase Hosting or Vercel |
-
----
-
-*Prepared for handover to QIU in-house development team.*
-*Digital Communications, Quest International University (DU021A)*
+*Prepared by Digital Communications, Quest International University (DU021A)*
+*This document describes intended system behaviour. Implementation decisions are deferred to the development team.*
