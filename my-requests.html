@@ -4,112 +4,127 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Requests — QIU Digital Communications</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0f0e0d; --paper: #f0ede8; --white: #fff;
-    --rust: #c0392b; --rust-light: #fdf0ee;
-    --gold: #c9a84c; --muted: #7a7570; --border: #d9d3ca;
-    --green: #1a6b45; --green-light: #eaf5ef;
+    --ink: #0f0e0d; --paper: #f5f2ee; --rust: #c0392b; --rust-light: #f5e8e6;
+    --gold: #c9a84c; --muted: #7a7570; --border: #d6d0c8; --white: #fff;
     --amber: #b45309; --amber-light: #fef3c7;
+    --green: #1a6b45; --green-light: #eaf5ef;
     --indigo: #3730a3; --indigo-light: #eef2ff;
-    --gray: #6b7280; --gray-light: #f3f4f6;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; }
+  body { font-family: 'Poppins', sans-serif; background: var(--paper); color: var(--ink); }
 
+  /* TOP BAR */
   .topband { background: var(--ink); color: var(--paper); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 20; }
-  .brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .brand { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
   .brand span { color: var(--gold); }
   nav { display: flex; gap: 2px; }
   nav a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 13px; border-radius: 3px; transition: all 0.18s; }
   nav a:hover { color: var(--paper); background: rgba(255,255,255,0.07); }
   nav a.active { color: var(--gold); background: rgba(201,168,76,0.1); }
   .sso-badge { font-size: 11px; color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 6px; }
-  .sso-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; }
+  .sso-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; flex-shrink: 0; }
 
-  .page-header { padding: 44px 40px 36px; background: var(--white); border-bottom: 1px solid var(--border); }
-  .page-header .tag { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
-  .page-header h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(22px,3vw,32px); margin-bottom: 6px; }
-  .page-header p { font-size: 14px; color: var(--muted); font-weight: 300; }
+  /* HERO */
+  .hero { padding: 44px 40px 36px; background: linear-gradient(135deg, #181614 0%, #2a231e 100%); color: var(--paper); position: relative; overflow: hidden; }
+  .hero::after { content: 'REQUESTS'; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 110px; color: rgba(255,255,255,0.025); position: absolute; right: -10px; top: -10px; line-height: 1; pointer-events: none; }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.35); padding: 4px 12px; border-radius: 2px; margin-bottom: 14px; }
+  .hero h1 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: clamp(22px,3.5vw,36px); margin-bottom: 8px; }
+  .hero p { font-size: 14px; font-weight: 300; opacity: 0.6; max-width: 480px; line-height: 1.7; }
 
-  .page-body { max-width: 860px; margin: 0 auto; padding: 32px 40px 80px; }
+  /* EMAIL BANNER */
+  .email-banner { background: var(--indigo-light); border-left: 4px solid var(--indigo); margin: 24px 40px 0; padding: 13px 18px; font-size: 13px; color: var(--indigo); border-radius: 0 4px 4px 0; line-height: 1.6; }
+  .email-banner strong { display: block; margin-bottom: 2px; }
 
-  .poc-notice { background: var(--indigo-light); border: 1px solid rgba(55,48,163,0.15); border-radius: 6px; padding: 12px 18px; font-size: 13px; color: var(--indigo); margin-bottom: 28px; line-height: 1.6; }
+  /* MAIN */
+  .main { max-width: 860px; margin: 0 auto; padding: 32px 40px 80px; }
 
-  .req-list { display: flex; flex-direction: column; gap: 18px; }
-
-  .req-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: box-shadow 0.2s; }
-  .req-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
-
-  .req-card-top { display: flex; align-items: flex-start; gap: 18px; padding: 20px 22px; cursor: pointer; }
-  .req-ref-col { flex-shrink: 0; min-width: 110px; }
-  .req-ref { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; color: var(--rust); display: block; margin-bottom: 4px; }
-  .req-date { font-size: 11px; color: var(--muted); }
-  .req-meta { flex: 1; min-width: 0; }
-  .req-title { font-weight: 600; font-size: 15px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .req-sub { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .req-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
-
-  .status-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; display: inline-block; white-space: nowrap; }
-  .s-pending_approval { background: var(--amber-light); color: var(--amber); }
-  .s-approved { background: var(--green-light); color: var(--green); }
-  .s-rejected { background: var(--rust-light); color: var(--rust); }
-  .s-in_progress { background: var(--indigo-light); color: var(--indigo); }
-  .s-on_hold { background: var(--gray-light); color: var(--gray); }
-  .s-completed { background: var(--green-light); color: var(--green); }
-
-  .cat-pill { font-size: 11px; padding: 3px 9px; border-radius: 20px; background: var(--paper); border: 1px solid var(--border); color: var(--muted); }
-
-  .chevron { font-size: 14px; color: var(--muted); transition: transform 0.2s; }
-  .chevron.rotated { transform: rotate(180deg); }
-
-  /* PROGRESS TRACKER */
-  .progress-wrap { padding: 20px 22px 22px; border-top: 1px solid var(--border); background: #faf9f7; display: none; }
-  .progress-wrap.open { display: block; }
-  .progress-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
-
-  .stages { display: flex; position: relative; margin-bottom: 16px; }
-  .stages::before { content: ''; position: absolute; top: 14px; left: 20px; right: 20px; height: 2px; background: var(--border); z-index: 0; }
-  .stage { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; z-index: 1; }
-  .stage-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.3s; }
-  .stage.done .stage-dot { background: var(--green); border-color: var(--green); color: white; font-size: 10px; font-weight: bold; }
-  .stage.active .stage-dot { background: var(--rust); border-color: var(--rust); color: white; font-size: 10px; box-shadow: 0 0 0 5px rgba(192,57,43,0.12); }
-  .stage.hold .stage-dot { background: var(--amber); border-color: var(--amber); color: white; }
-  .stage.rejected-dot .stage-dot { background: var(--rust); border-color: var(--rust); color: white; font-size: 10px; }
-  .stage-label { font-size: 10px; font-weight: 500; color: var(--muted); text-align: center; text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.3; }
-  .stage.done .stage-label, .stage.active .stage-label { color: var(--ink); font-weight: 600; }
-
-  .status-note { font-size: 13px; border-radius: 4px; padding: 10px 14px; margin-top: 4px; line-height: 1.6; }
-  .note-rejected { background: var(--rust-light); color: var(--rust); }
-  .note-hold { background: var(--amber-light); color: var(--amber); }
-  .note-completed { background: var(--green-light); color: var(--green); }
-  .note-approved { background: var(--green-light); color: var(--green); }
-
-  /* DETAILS */
-  .req-details { padding: 20px 22px; border-top: 1px solid var(--border); display: none; }
-  .req-details.open { display: block; }
-  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; margin-bottom: 16px; }
-  .dl dt { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 3px; }
-  .dl dd { font-size: 13px; line-height: 1.5; }
-  .desc-block { background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 13px 15px; font-size: 13px; line-height: 1.7; margin-bottom: 12px; }
-  .sub-heading { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; }
-
-  /* EMPTY */
-  .empty-state { text-align: center; padding: 80px 20px; }
-  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
-  .empty-state h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; margin-bottom: 8px; }
-  .empty-state p { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
-  .btn { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase; padding: 11px 26px; border-radius: 4px; border: none; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.18s; }
+  /* EMPTY STATE */
+  .empty-state { text-align: center; padding: 72px 20px; }
+  .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+  .empty-state h3 { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 18px; margin-bottom: 8px; color: var(--muted); }
+  .empty-state p { font-size: 14px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+  .btn { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 11px 26px; border-radius: 4px; border: none; cursor: pointer; transition: all 0.18s; text-decoration: none; display: inline-block; }
   .btn-primary { background: var(--rust); color: var(--white); }
-  .btn-primary:hover { background: #a93226; }
+  .btn-primary:hover { background: #a93226; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(192,57,43,0.3); }
+
+  /* REQUEST CARDS */
+  .requests-list { display: flex; flex-direction: column; gap: 16px; }
+
+  .req-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: box-shadow 0.18s; }
+  .req-card:hover { box-shadow: 0 4px 20px rgba(15,14,13,0.08); }
+
+  .req-header { padding: 18px 22px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; cursor: pointer; }
+  .req-header-left { flex: 1; min-width: 0; }
+  .req-ref { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 13px; color: var(--rust); letter-spacing: 0.06em; margin-bottom: 4px; }
+  .req-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .req-meta { font-size: 12px; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; }
+  .req-meta span { display: flex; align-items: center; gap: 4px; }
+
+  .req-header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+  .status-badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; white-space: nowrap; letter-spacing: 0.04em; }
+  .badge-pending { background: var(--amber-light); color: var(--amber); }
+  .badge-approved { background: var(--green-light); color: var(--green); }
+  .badge-in_progress { background: var(--indigo-light); color: var(--indigo); }
+  .badge-on_hold { background: #f0f0f0; color: #555; }
+  .badge-completed { background: var(--green-light); color: var(--green); }
+  .badge-rejected { background: var(--rust-light); color: var(--rust); }
+
+  .expand-icon { font-size: 13px; color: var(--muted); margin-top: 2px; transition: transform 0.2s; }
+  .req-card.open .expand-icon { transform: rotate(180deg); }
+
+  /* PROGRESS STEPPER */
+  .progress-wrap { padding: 0 22px 18px; border-bottom: 1px solid var(--border); }
+  .stepper { display: flex; align-items: flex-start; position: relative; }
+  .stepper::before { content: ''; position: absolute; top: 14px; left: 14px; right: 14px; height: 2px; background: var(--border); z-index: 0; }
+  .step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; z-index: 1; }
+  .step-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--muted); transition: all 0.2s; }
+  .step-dot.done { background: var(--green); border-color: var(--green); color: var(--white); }
+  .step-dot.active { background: var(--rust); border-color: var(--rust); color: var(--white); box-shadow: 0 0 0 4px rgba(192,57,43,0.15); }
+  .step-dot.hold { background: #999; border-color: #999; color: var(--white); }
+  .step-dot.rejected { background: var(--rust); border-color: var(--rust); color: var(--white); }
+  .step-label { font-size: 10px; font-weight: 600; text-align: center; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.3; max-width: 64px; }
+  .step-label.active-label { color: var(--ink); font-weight: 700; }
+
+  /* STATUS MESSAGE */
+  .status-msg { margin: 14px 22px 0; padding: 11px 14px; border-radius: 5px; font-size: 13px; line-height: 1.6; }
+  .msg-amber { background: var(--amber-light); color: var(--amber); border-left: 3px solid var(--amber); }
+  .msg-green { background: var(--green-light); color: var(--green); border-left: 3px solid var(--green); }
+  .msg-indigo { background: var(--indigo-light); color: var(--indigo); border-left: 3px solid var(--indigo); }
+  .msg-gray { background: #f0f0f0; color: #555; border-left: 3px solid #999; }
+  .msg-rust { background: var(--rust-light); color: var(--rust); border-left: 3px solid var(--rust); }
+
+  /* DETAIL PANEL */
+  .req-detail { display: none; padding: 20px 22px 22px; border-top: 1px solid var(--border); }
+  .req-card.open .req-detail { display: block; }
+
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; margin-bottom: 18px; }
+  .dl { display: flex; flex-direction: column; gap: 2px; }
+  dt { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  dd { font-size: 13px; color: var(--ink); line-height: 1.5; }
+
+  .sub-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; margin-top: 16px; }
+  .desc-block { font-size: 13px; line-height: 1.8; color: var(--ink); background: var(--paper); padding: 12px 14px; border-radius: 4px; border: 1px solid var(--border); }
+  .desc-block p { margin-bottom: 8px; }
+  .desc-block p:last-child { margin-bottom: 0; }
+  .desc-block ul, .desc-block ol { padding-left: 18px; }
+  .desc-block li { margin-bottom: 4px; }
+
+  .ref-link { font-size: 13px; color: var(--indigo); word-break: break-all; }
+  .ref-link a { color: var(--indigo); }
+
+  /* POC NOTICE */
+  .poc-notice { background: #f0f0f0; border-radius: 4px; padding: 10px 14px; font-size: 11px; color: var(--muted); line-height: 1.6; margin-top: 20px; }
 
   @media(max-width:640px) {
-    .topband, .page-header, .page-body { padding-left: 20px; padding-right: 20px; }
-    .req-card-top { flex-wrap: wrap; }
-    .req-right { flex-direction: row; align-items: center; }
+    .topband { padding: 0 20px; }
+    .hero, .main { padding-left: 20px; padding-right: 20px; }
+    .email-banner { margin-left: 20px; margin-right: 20px; }
     .detail-grid { grid-template-columns: 1fr; }
     .sso-badge { display: none; }
+    .req-meta { gap: 8px; }
   }
 </style>
 </head>
@@ -120,156 +135,214 @@
   <nav>
     <a href="index.html">New Request</a>
     <a href="my-requests.html" class="active">My Requests</a>
-    <a href="approval.html">Approvals</a>
-    <a href="dashboard.html">Dashboard</a>
+    <a href="user-guide.html">User Guide</a>
   </nav>
   <div class="sso-badge"><div class="sso-dot"></div>Google SSO</div>
 </div>
 
-<div class="page-header">
-  <div class="tag">Staff Portal</div>
+<div class="hero">
+  <div class="hero-tag">Digital Communications — QIU</div>
   <h1>My Requests</h1>
-  <p>Track the current status and progress of all your job requests.</p>
+  <p>Track the status of your submitted job requests. Updates are sent to your email as your request progresses.</p>
 </div>
 
-<div class="page-body">
-  <div class="poc-notice">
-    <strong>POC Note:</strong> In production, this page will automatically filter to show only your own requests via Google SSO. For this demo, all submitted requests are visible.
+<div class="email-banner">
+  <strong>📧 Need to follow up or add information?</strong>
+  Reply to the acknowledgement email you received when you submitted your request. All communication about your request happens in that email thread — do not send a new email.
+</div>
+
+<div class="main" id="main">
+  <div class="empty-state" id="emptyState" style="display:none">
+    <div class="empty-icon">📋</div>
+    <h3>No requests yet</h3>
+    <p>You haven't submitted any job requests. Use the form to submit your first request — your HOD will be notified for approval.</p>
+    <a href="index.html" class="btn btn-primary">Submit a Request →</a>
   </div>
-  <div style="background:var(--white);border:1px solid var(--border);border-left:3px solid var(--ink);border-radius:0 6px 6px 0;padding:14px 18px;margin-bottom:28px;font-size:13px;line-height:1.7;color:var(--ink);">
-    <strong>This page shows your request status only.</strong> For all enquiries, clarifications, or updates — please reply directly to the acknowledgement email you received from <strong>digitalcomms@qiu.edu.my</strong> when you submitted your request. All communication for a request happens in that email thread.
-  </div>
-  <div class="req-list" id="reqList"></div>
+  <div class="requests-list" id="requestsList"></div>
 </div>
 
 <script>
-  const CAT_LABELS = { printed:'🖨️ Printed', digital:'📱 Digital', website:'🌐 Website', event:'📸 Event', video:'🎬 Video', other:'✦ Other' };
-  const STATUS_LABELS = { pending_approval:'Awaiting HOD Approval', approved:'HOD Approved', rejected:'Rejected', in_progress:'In Progress', on_hold:'On Hold', completed:'Completed' };
+  const CAT_LABELS = {
+    printed: 'Printed Media', digital: 'Digital Media', website: 'Website',
+    event: 'Event Coverage', video: 'Video Production', other: 'Other'
+  };
 
-  const STAGES = [
-    { label: 'Submitted',    icon: '📋' },
-    { label: 'HOD Approval', icon: '👤' },
-    { label: 'In Progress',  icon: '⚙️' },
-    { label: 'Under Review', icon: '🔍' },
-    { label: 'Completed',    icon: '✓'  },
+  const STEPS = [
+    { key: 'submitted',   label: 'Submitted' },
+    { key: 'hod',         label: 'HOD Approval' },
+    { key: 'in_progress', label: 'In Progress' },
+    { key: 'review',      label: 'Under Review' },
+    { key: 'completed',   label: 'Completed' }
   ];
 
-  function getActiveStage(status) {
-    // returns index of current active stage (0-based)
-    if (status === 'pending_approval') return 1;
-    if (status === 'approved') return 2;
-    if (status === 'in_progress') return 2;
-    if (status === 'on_hold') return 2;
-    if (status === 'completed') return 4;
-    if (status === 'rejected') return 1;
-    return 0;
-  }
-
-  function buildStageRow(status) {
-    const active = getActiveStage(status);
-    return STAGES.map((s, i) => {
-      let cls = '', dotContent = s.icon;
-      if (status === 'rejected' && i === 1) { cls = 'rejected-dot'; dotContent = '✕'; }
-      else if (i < active) { cls = 'done'; dotContent = '✓'; }
-      else if (i === active) {
-        if (status === 'on_hold') { cls = 'hold'; dotContent = '⏸'; }
-        else { cls = 'active'; dotContent = s.icon; }
-      }
-      return `<div class="stage ${cls}"><div class="stage-dot">${dotContent}</div><div class="stage-label">${s.label}</div></div>`;
-    }).join('');
-  }
-
-  function getStatusNote(status) {
-    // All notes direct the requestor to their acknowledgement email thread.
-    // The JRF portal is for status tracking only — all communication happens via email.
-    const emailReminder = `Check your inbox for the acknowledgement email from <strong>digitalcomms@qiu.edu.my</strong> and reply directly to that thread for any queries or additional information.`;
-    const notes = {
-      pending_approval: `<div class="status-note" style="background:var(--amber-light);color:var(--amber);">⏳ Awaiting endorsement from your HOD. No action needed from you at this stage.</div>`,
-      approved:  `<div class="status-note note-approved">✓ Your request has been endorsed by your HOD and is queued for our team. You will receive an email update when work begins.</div>`,
-      in_progress: `<div class="status-note" style="background:var(--indigo-light);color:var(--indigo);">⚙️ Our team is working on your request. If we need clarification, we will reach out via your request email thread. ${emailReminder}</div>`,
-      on_hold: `<div class="status-note note-hold">⏸ Your request is temporarily on hold. Our team will contact you via your request email thread. ${emailReminder}</div>`,
-      completed: `<div class="status-note note-completed">✓ Your project is complete — please collect your deliverable from the Digital Communications office.</div>`,
-      rejected:  `<div class="status-note note-rejected">⚠️ Your request was not endorsed by your HOD. Please speak with them directly or submit a revised request.</div>`,
+  function statusToStep(status) {
+    const map = {
+      pending_approval: 1,
+      approved:         2,
+      in_progress:      3,
+      on_hold:          3,
+      completed:        5,
+      rejected:         1
     };
-    return notes[status] || '';
+    return map[status] ?? 1;
   }
 
-  function fmtDate(iso) {
-    if (!iso) return '—';
-    return new Date(iso).toLocaleDateString('en-MY', { day:'numeric', month:'short', year:'numeric' });
+  function fmtDate(d) {
+    if (!d) return '—';
+    const dt = new Date(d + (d.length === 10 ? 'T00:00:00' : ''));
+    return dt.toLocaleDateString('en-MY', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
-  let openCard = null;
+  function badgeClass(status) {
+    const map = {
+      pending_approval: 'badge-pending',
+      approved:         'badge-approved',
+      in_progress:      'badge-in_progress',
+      on_hold:          'badge-on_hold',
+      completed:        'badge-completed',
+      rejected:         'badge-rejected'
+    };
+    return map[status] || 'badge-pending';
+  }
 
-  function toggleCard(i) {
-    const pw = document.getElementById(`pw-${i}`);
-    const dw = document.getElementById(`dw-${i}`);
-    const cv = document.getElementById(`cv-${i}`);
-    if (openCard !== null && openCard !== i) {
-      document.getElementById(`pw-${openCard}`)?.classList.remove('open');
-      document.getElementById(`dw-${openCard}`)?.classList.remove('open');
-      document.getElementById(`cv-${openCard}`)?.classList.remove('rotated');
-    }
-    const wasOpen = pw.classList.contains('open');
-    pw.classList.toggle('open', !wasOpen);
-    dw.classList.toggle('open', !wasOpen);
-    cv.classList.toggle('rotated', !wasOpen);
-    openCard = wasOpen ? null : i;
+  function badgeLabel(status) {
+    const map = {
+      pending_approval: 'Awaiting HOD Approval',
+      approved:         'HOD Approved',
+      in_progress:      'In Progress',
+      on_hold:          'On Hold',
+      completed:        'Completed',
+      rejected:         'Not Approved'
+    };
+    return map[status] || status;
+  }
+
+  function statusMessage(status) {
+    const msgs = {
+      pending_approval: { cls: 'msg-amber', text: 'Your request is waiting for your HOD\'s endorsement. You will receive an email update once it is approved.' },
+      approved:         { cls: 'msg-green', text: 'Your HOD has endorsed this request. Our team has been notified and will begin work soon. You will receive an email when work starts.' },
+      in_progress:      { cls: 'msg-indigo', text: 'Our team is actively working on your request. If we need clarification, we will reach out via your request email thread.' },
+      on_hold:          { cls: 'msg-gray', text: 'Your request has been placed on hold. Our team will contact you via your request email thread with further details.' },
+      completed:        { cls: 'msg-green', text: 'Your project is complete! Please collect it from the Digital Communications office, or check your email for the file link.' },
+      rejected:         { cls: 'msg-rust', text: 'This request was not approved by your HOD. Please speak with your HOD directly for more information.' }
+    };
+    return msgs[status] || msgs.pending_approval;
+  }
+
+  function buildStepper(status) {
+    const activeIdx = statusToStep(status) - 1;
+    const isRejected = status === 'rejected';
+    const isOnHold = status === 'on_hold';
+
+    return `<div class="stepper">
+      ${STEPS.map((s, i) => {
+        let dotClass = '';
+        let labelClass = '';
+        let content = i + 1;
+
+        if (isRejected && i === 0) {
+          dotClass = 'rejected'; content = '✕'; labelClass = 'active-label';
+        } else if (isOnHold && i === activeIdx) {
+          dotClass = 'hold'; content = '⏸'; labelClass = 'active-label';
+        } else if (i < activeIdx) {
+          dotClass = 'done'; content = '✓';
+        } else if (i === activeIdx) {
+          dotClass = 'active'; labelClass = 'active-label';
+        }
+
+        return `<div class="step">
+          <div class="step-dot ${dotClass}">${content}</div>
+          <div class="step-label ${labelClass}">${s.label}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  function buildCard(r) {
+    const catLabel = CAT_LABELS[r.category] || r.category;
+    const subtypeStr = r.subtypes?.length ? ` — ${r.subtypes.join(', ')}` : '';
+    const msg = statusMessage(r.status);
+
+    const descContent = r.description
+      ? `<div class="desc-block">${r.description}</div>`
+      : r.descriptionPlain
+        ? `<div class="desc-block">${r.descriptionPlain}</div>`
+        : '<div class="desc-block" style="color:var(--muted);font-style:italic">No description provided.</div>';
+
+    const refContent = r.references
+      ? `<div class="ref-link">📁 <a href="${r.references}" target="_blank" rel="noopener">${r.references}</a></div>`
+      : '<span style="color:var(--muted);font-size:13px">None provided</span>';
+
+    return `
+    <div class="req-card" id="card-${r.ref}">
+      <div class="req-header" onclick="toggleCard('${r.ref}')">
+        <div class="req-header-left">
+          <div class="req-ref">${r.ref}</div>
+          <div class="req-title">${catLabel}${subtypeStr}</div>
+          <div class="req-meta">
+            <span>👤 ${r.requestedBy}</span>
+            <span>🏢 ${r.department}</span>
+            <span>📅 Due ${fmtDate(r.dueDate)}</span>
+          </div>
+        </div>
+        <div class="req-header-right">
+          <span class="status-badge ${badgeClass(r.status)}">${badgeLabel(r.status)}</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        ${buildStepper(r.status)}
+      </div>
+
+      <div class="status-msg ${msg.cls}">${msg.text}</div>
+
+      <div class="req-detail">
+        <div class="detail-grid">
+          <div class="dl"><dt>Reference</dt><dd>${r.ref}</dd></div>
+          <div class="dl"><dt>Submitted</dt><dd>${fmtDate(r.submittedAt)}</dd></div>
+          <div class="dl"><dt>Requested By</dt><dd>${r.requestedBy}</dd></div>
+          <div class="dl"><dt>Email</dt><dd>${r.email}</dd></div>
+          <div class="dl"><dt>Department</dt><dd>${r.department}</dd></div>
+          <div class="dl"><dt>Requested Date</dt><dd>${fmtDate(r.requestedDate)}</dd></div>
+          <div class="dl"><dt>Due Date</dt><dd>${fmtDate(r.dueDate)}</dd></div>
+          <div class="dl"><dt>Category</dt><dd>${catLabel}${subtypeStr}</dd></div>
+        </div>
+
+        <div class="sub-heading">Job Purpose</div>
+        <div class="desc-block">${r.jobPurpose || '—'}</div>
+
+        <div class="sub-heading">Project Description</div>
+        ${descContent}
+
+        <div class="sub-heading">Supporting Materials</div>
+        ${refContent}
+
+        <div class="poc-notice">
+          ℹ️ In production, this page will only show requests submitted by your account (filtered by Google SSO email). Demo mode shows all requests in this browser session.
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function toggleCard(ref) {
+    const card = document.getElementById('card-' + ref);
+    card.classList.toggle('open');
   }
 
   function render() {
-    const requests = JSON.parse(localStorage.getItem('qiu_requests') || '[]');
-    const list = document.getElementById('reqList');
+    const all = JSON.parse(localStorage.getItem('qiu_requests') || '[]');
+    const listEl = document.getElementById('requestsList');
+    const emptyEl = document.getElementById('emptyState');
 
-    if (!requests.length) {
-      list.innerHTML = `<div class="empty-state"><div class="icon">📋</div><h3>No requests yet</h3><p>You haven't submitted any job requests. Start one now.</p><a href="index.html" class="btn btn-primary">Submit a Request</a></div>`;
+    if (all.length === 0) {
+      emptyEl.style.display = 'block';
+      listEl.innerHTML = '';
       return;
     }
 
-    list.innerHTML = requests.map((r, i) => `
-      <div class="req-card">
-        <div class="req-card-top" onclick="toggleCard(${i})">
-          <div class="req-ref-col">
-            <span class="req-ref">${r.ref}</span>
-            <span class="req-date">${fmtDate(r.submittedAt)}</span>
-          </div>
-          <div class="req-meta">
-            <div class="req-title">${r.jobPurpose?.substring(0,75)}${(r.jobPurpose?.length||0)>75?'…':''}</div>
-            <div class="req-sub">
-              <span class="cat-pill">${CAT_LABELS[r.category]||r.category}</span>
-              <span>Due: ${fmtDate(r.dueDate)}</span>
-
-            </div>
-          </div>
-          <div class="req-right">
-            <span class="status-badge s-${r.status}">${STATUS_LABELS[r.status]||r.status}</span>
-            <span class="chevron" id="cv-${i}">▾</span>
-          </div>
-        </div>
-
-        <div class="progress-wrap" id="pw-${i}">
-          <div class="progress-title">Request Progress</div>
-          <div class="stages">${buildStageRow(r.status)}</div>
-          ${getStatusNote(r.status)}
-        </div>
-
-        <div class="req-details" id="dw-${i}">
-          <div class="detail-grid">
-            <div class="dl"><dt>Requested By</dt><dd>${r.requestedBy}</dd></div>
-            <div class="dl"><dt>Department</dt><dd>${r.department}</dd></div>
-            <div class="dl"><dt>Request Date</dt><dd>${fmtDate(r.requestedDate)}</dd></div>
-            <div class="dl"><dt>Due Date</dt><dd>${fmtDate(r.dueDate)}</dd></div>
-            <div class="dl"><dt>Category</dt><dd>${CAT_LABELS[r.category]||r.category}${r.subtypes?.length?' — '+r.subtypes.join(', '):''}</dd></div>
-            ${r.size?`<div class="dl"><dt>Specs</dt><dd>${r.size}${r.colour?' · '+r.colour:''}${r.bleed?' · '+r.bleed:''}</dd></div>`:''}
-          </div>
-          <div class="sub-heading">Job Purpose</div>
-          <div class="desc-block">${r.jobPurpose}</div>
-          <div class="sub-heading">Project Description</div>
-          <div class="desc-block">${r.description}</div>
-          ${r.references?`<div class="sub-heading">References</div><div class="desc-block">${r.references}</div>`:''}
-        </div>
-      </div>
-    `).join('');
+    emptyEl.style.display = 'none';
+    listEl.innerHTML = all.map(buildCard).join('');
   }
 
   render();

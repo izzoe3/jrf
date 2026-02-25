@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Guide — QIU Digital Communications</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0d; --paper: #f5f2ee; --white: #fff;
+    --rust: #c0392b; --rust-light: #fdf0ee;
+    --gold: #c9a84c; --muted: #7a7570; --border: #d6d0c8;
+    --green: #1a6b45; --green-light: #eaf5ef;
+    --amber: #b45309; --amber-light: #fef3c7;
+    --indigo: #3730a3; --indigo-light: #eef2ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Poppins', sans-serif; background: var(--paper); color: var(--ink); }
+
+  /* NAV */
+  .topband { background: var(--ink); color: var(--paper); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 20; }
+  .brand { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .brand span { color: var(--gold); }
+  nav { display: flex; gap: 2px; }
+  nav a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 13px; border-radius: 3px; transition: all 0.18s; }
+  nav a:hover { color: var(--paper); background: rgba(255,255,255,0.07); }
+  nav a.active { color: var(--gold); background: rgba(201,168,76,0.1); }
+
+  /* HERO */
+  .hero { padding: 52px 40px 44px; background: linear-gradient(135deg, #181614 0%, #2a231e 100%); color: var(--paper); position: relative; overflow: hidden; }
+  .hero::after { content: 'GUIDE'; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 130px; color: rgba(255,255,255,0.025); position: absolute; right: -10px; top: -10px; line-height: 1; pointer-events: none; }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.35); padding: 4px 12px; border-radius: 2px; margin-bottom: 18px; }
+  .hero h1 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: clamp(24px,4vw,42px); margin-bottom: 12px; line-height: 1.1; }
+  .hero p { font-size: 15px; font-weight: 300; opacity: 0.65; max-width: 540px; line-height: 1.8; }
+
+  /* LAYOUT */
+  .guide-wrap { max-width: 780px; margin: 0 auto; padding: 48px 40px 100px; }
+
+  /* TOC */
+  .toc { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 24px 28px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .toc ol { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .toc li { font-size: 14px; }
+  .toc a { color: var(--rust); text-decoration: none; font-weight: 500; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* SECTIONS */
+  .guide-section { margin-bottom: 56px; scroll-margin-top: 80px; }
+  .section-num { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rust); margin-bottom: 6px; display: block; }
+  .guide-section h2 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 22px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 2px solid var(--ink); }
+  .guide-section p { font-size: 15px; line-height: 1.8; margin-bottom: 14px; color: #2a2826; }
+  .guide-section p:last-child { margin-bottom: 0; }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 0; margin: 24px 0; }
+  .step { display: flex; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--border); }
+  .step:last-child { border-bottom: none; }
+  .step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: var(--white); font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .step-body { flex: 1; }
+  .step-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+  .step-desc { font-size: 14px; line-height: 1.8; color: #2a2826; }
+  .step-desc strong { color: var(--ink); }
+  .step-desc a { color: var(--rust); }
+
+  /* CALLOUTS */
+  .callout { border-radius: 6px; padding: 16px 20px; margin: 20px 0; font-size: 14px; line-height: 1.8; }
+  .callout-amber { background: var(--amber-light); border-left: 4px solid var(--amber); color: #7c4a0a; }
+  .callout-green { background: var(--green-light); border-left: 4px solid var(--green); color: #0f4a2a; }
+  .callout-rust { background: var(--rust-light); border-left: 4px solid var(--rust); color: #7a1f16; }
+  .callout-indigo { background: var(--indigo-light); border-left: 4px solid var(--indigo); color: #251f7a; }
+  .callout strong { display: block; margin-bottom: 4px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* CATEGORY TABLE */
+  .cat-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .cat-table th { background: var(--ink); color: var(--paper); text-align: left; padding: 10px 14px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .cat-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+  .cat-table tr:nth-child(even) td { background: #faf8f5; }
+  .cat-table tr:last-child td { border-bottom: none; }
+  .cat-emoji { font-size: 16px; margin-right: 6px; }
+
+  /* STATUS FLOW */
+  .status-flow { display: flex; align-items: flex-start; gap: 0; margin: 24px 0; position: relative; }
+  .status-flow::before { content: ''; position: absolute; top: 18px; left: 18px; right: 18px; height: 2px; background: var(--border); z-index: 0; }
+  .status-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; z-index: 1; }
+  .ss-dot { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 2px solid var(--border); background: var(--white); }
+  .ss-dot.submitted { background: var(--ink); border-color: var(--ink); color: white; font-size: 12px; }
+  .ss-dot.hod { background: var(--amber); border-color: var(--amber); color: white; font-size: 12px; }
+  .ss-dot.working { background: var(--indigo); border-color: var(--indigo); color: white; font-size: 12px; }
+  .ss-dot.done { background: var(--green); border-color: var(--green); color: white; font-size: 12px; }
+  .ss-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.3; }
+  .ss-sublabel { font-size: 10px; color: var(--muted); text-align: center; line-height: 1.4; max-width: 70px; }
+
+  /* DO / DON'T */
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .do-box, .dont-box { border-radius: 6px; padding: 18px 20px; }
+  .do-box { background: var(--green-light); border: 1px solid rgba(26,107,69,0.15); }
+  .dont-box { background: var(--rust-light); border: 1px solid rgba(192,57,43,0.15); }
+  .do-box h4 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
+  .dont-box h4 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rust); margin-bottom: 12px; }
+  .do-box li, .dont-box li { font-size: 13px; line-height: 1.7; margin-left: 16px; margin-bottom: 4px; }
+
+  /* FAQ */
+  .faq { display: flex; flex-direction: column; }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-item:first-child { border-top: 1px solid var(--border); }
+  .faq-q { font-weight: 600; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 0; }
+  .faq-q::after { content: '+'; font-size: 20px; color: var(--muted); flex-shrink: 0; transition: transform 0.2s; }
+  .faq-item.open .faq-q::after { transform: rotate(45deg); }
+  .faq-a { display: none; font-size: 14px; line-height: 1.8; color: #2a2826; padding-bottom: 18px; }
+  .faq-item.open .faq-a { display: block; }
+
+  @media(max-width:640px) {
+    .topband { padding: 0 20px; }
+    .hero, .guide-wrap { padding-left: 20px; padding-right: 20px; }
+    .do-dont { grid-template-columns: 1fr; }
+    .status-flow { gap: 4px; }
+    .ss-sublabel { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topband">
+  <div class="brand">QIU <span>Digital Comms</span></div>
+  <nav>
+    <a href="index.html">New Request</a>
+    <a href="my-requests.html">My Requests</a>
+    <a href="user-guide.html" class="active">User Guide</a>
+  </nav>
+</div>
+
+<div class="hero">
+  <div class="hero-tag">Digital Communications — QIU</div>
+  <h1>How to Submit a Job Request</h1>
+  <p>A step-by-step guide for QIU staff on how to use the Digital Communications Job Request system — from submitting your first request to tracking its progress.</p>
+</div>
+
+<div class="guide-wrap">
+
+  <div class="toc">
+    <h2>In This Guide</h2>
+    <ol>
+      <li><a href="#s1">What is the Job Request Form?</a></li>
+      <li><a href="#s2">Before You Start</a></li>
+      <li><a href="#s3">Step-by-Step: Submitting a Request</a></li>
+      <li><a href="#s4">What Happens After You Submit</a></li>
+      <li><a href="#s5">Tracking Your Request</a></li>
+      <li><a href="#s6">How to Communicate With Our Team</a></li>
+      <li><a href="#s7">Sharing Supporting Materials</a></li>
+      <li><a href="#s8">Frequently Asked Questions</a></li>
+    </ol>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="guide-section" id="s1">
+    <span class="section-num">Section 1</span>
+    <h2>What is the Job Request Form?</h2>
+    <p>The Job Request Form (JRF) is how all QIU staff submit design, media, photography, video, and web requests to the Digital Communications team. It replaces the old paper form and email process.</p>
+    <p>Any time you need something created or produced by Digital Comms — a poster, a social media post, event photography, a website update, a video — you start here.</p>
+    <div class="callout callout-amber">
+      <strong>Important</strong>
+      Do not email the Digital Comms team directly to make a new request. All new requests must go through this form so they can be tracked, approved, and assigned properly. Requests made by email may not be actioned.
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="guide-section" id="s2">
+    <span class="section-num">Section 2</span>
+    <h2>Before You Start</h2>
+    <p>Have the following ready before filling in the form. The more prepared you are, the faster your request will be processed.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">A realistic due date</div>
+          <div class="step-desc">We require a minimum of <strong>10–14 working days</strong> to complete most requests. Merchandise, T-shirts, and COO-level approvals require additional time. Do not set a due date that is less than two weeks away unless you have already spoken to us.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">All the details of your project</div>
+          <div class="step-desc">Think through your request carefully before filling in the form. The description field is the most important part — it tells us everything we need to do the job right without having to go back and forth. See <a href="#s3">Section 3</a> for guidance on what to include.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Your supporting materials on Google Drive (if any)</div>
+          <div class="step-desc">If you have logos, photos, reference images, or any existing files to share — upload them to your Google Drive first and have the link ready. See <a href="#s7">Section 7</a> for how to share a Drive link correctly.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="guide-section" id="s3">
+    <span class="section-num">Section 3</span>
+    <h2>Step-by-Step: Submitting a Request</h2>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Confirm your details</div>
+          <div class="step-desc">When you log in with your QIU account, your name, email address, department, and HOD will be filled in automatically. Check that these are correct before continuing — particularly your faculty or department, as this helps us route and prioritise your request correctly.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Set your dates</div>
+          <div class="step-desc">The <strong>Requested Date</strong> is today's date — it is filled in automatically. The <strong>Final Due Date</strong> is when you need the completed work. Remember the minimum lead time is <strong>10–14 working days</strong>.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Write your Job Purpose</div>
+          <div class="step-desc">This is a one or two sentence summary — what is this for? For example: <em>"Promotional poster for the Faculty of Health Sciences Annual Symposium on 15 March 2025."</em> Keep it short and specific.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Select your request category</div>
+          <div class="step-desc">Choose the category that best describes your request, then select the specific type from the options that appear below. If your request covers more than one type (e.g. a poster and a banner for the same event), select the primary one and describe the rest in the description field.</div>
+          <br>
+          <table class="cat-table">
+            <thead><tr><th>Category</th><th>What it covers</th></tr></thead>
+            <tbody>
+              <tr><td><span class="cat-emoji">🖨️</span><strong>Printed Media</strong></td><td>Posters, banners, bunting, brochures, flyers, booklets, newsletters, signage, exhibition booths, logo design, merchandise, T-shirts</td></tr>
+              <tr><td><span class="cat-emoji">📱</span><strong>Digital Media</strong></td><td>Social media posts and campaigns, digital advertisements, email blast designs, digital backdrops, competition certificates</td></tr>
+              <tr><td><span class="cat-emoji">🌐</span><strong>Website</strong></td><td>Updates or amendments to existing pages, creating event pages (internal or external), adding new sections to the QIU website</td></tr>
+              <tr><td><span class="cat-emoji">📸</span><strong>Event Coverage</strong></td><td>Photography, videography, or both for your event. Also includes live streaming requests</td></tr>
+              <tr><td><span class="cat-emoji">🎬</span><strong>Video Production</strong></td><td>Promotional videos, social media reels, talk or webinar recordings, animation</td></tr>
+              <tr><td><span class="cat-emoji">✦</span><strong>Other</strong></td><td>Anything that does not fit the above categories</td></tr>
+            </tbody>
+          </table>
+          <div class="callout callout-amber" style="margin-top:16px">
+            <strong>Merchandise &amp; T-Shirts</strong>
+            Requests for merchandise design and T-shirts require COO approval before Digital Comms can proceed. Please allow additional time and ensure your HOD is aware of this requirement before submitting.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Write your Detailed Description — this is the most important field</div>
+          <div class="step-desc">This is where you tell us everything we need to complete your request. <strong>The more detail you provide, the faster your request will be completed.</strong> Vague descriptions lead to follow-up questions, delays, and revisions.</div>
+          <br>
+          <div class="do-dont">
+            <div class="do-box">
+              <h4>✓ Good description</h4>
+              <ul>
+                <li>Event name, date, time, and venue</li>
+                <li>Sizes or quantities needed (e.g. 2× A1 posters, 50 copies)</li>
+                <li>Colours to use or avoid</li>
+                <li>Exact wording / text content</li>
+                <li>Target audience</li>
+                <li>Tone — formal, fun, corporate, etc.</li>
+                <li>Any references or examples you like</li>
+                <li>Speaker names, logos, or photos needed</li>
+              </ul>
+            </div>
+            <div class="dont-box">
+              <h4>✗ Not enough detail</h4>
+              <ul>
+                <li>"Please make a poster for our event"</li>
+                <li>"Same as last year"</li>
+                <li>"Something nice and professional"</li>
+                <li>"I'll send the details later"</li>
+                <li>No sizes, no quantities, no text</li>
+                <li>No date or venue information</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout callout-indigo" style="margin-top:4px">
+            <strong>Tip — use the formatting tools</strong>
+            The description field has formatting tools at the top — you can use bullet points, numbered lists, and bold text to structure your brief clearly.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-title">Add your Google Drive link (if you have supporting files)</div>
+          <div class="step-desc">If you have existing logos, photos, reference images, or text documents to share — put them in a Google Drive folder and paste the link here. <strong>Before submitting, make sure the sharing permission is set to "Anyone at QIU with the link can view."</strong> See <a href="#s7">Section 7</a> for how to do this.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-body">
+          <div class="step-title">Submit your request</div>
+          <div class="step-desc">Click <strong>Submit Request</strong>. Your HOD will immediately receive a notification to endorse your request. You will receive an acknowledgement email — <strong>keep this email</strong>, it is your communication channel for this request. Do not delete it.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="guide-section" id="s4">
+    <span class="section-num">Section 4</span>
+    <h2>What Happens After You Submit</h2>
+    <p>Here is the complete journey of your request from submission to completion.</p>
+    <div class="status-flow">
+      <div class="status-step">
+        <div class="ss-dot submitted">📋</div>
+        <div class="ss-label">Submitted</div>
+        <div class="ss-sublabel">You fill in the form</div>
+      </div>
+      <div class="status-step">
+        <div class="ss-dot hod">👤</div>
+        <div class="ss-label">HOD Approval</div>
+        <div class="ss-sublabel">HOD endorses your request</div>
+      </div>
+      <div class="status-step">
+        <div class="ss-dot working">⚙️</div>
+        <div class="ss-label">In Progress</div>
+        <div class="ss-sublabel">Our team is working on it</div>
+      </div>
+      <div class="status-step">
+        <div class="ss-dot done">✓</div>
+        <div class="ss-label">Completed</div>
+        <div class="ss-sublabel">Collect from Digital Comms</div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num" style="background:var(--amber)">1</div>
+        <div class="step-body">
+          <div class="step-title">You receive an acknowledgement email</div>
+          <div class="step-desc">Immediately after submitting, you will receive an email from <strong>digitalcomms@qiu.edu.my</strong> with your reference number (e.g. QIU-2025-0001). <strong>Do not delete this email.</strong> It is the thread where all updates and communication about your request will happen.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--amber)">2</div>
+        <div class="step-body">
+          <div class="step-title">Your HOD is notified</div>
+          <div class="step-desc">Your HOD receives an email asking them to endorse your request. If you do not hear back within a day or two, follow up with your HOD directly — we cannot begin work without their endorsement.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--green)">3</div>
+        <div class="step-body">
+          <div class="step-title">HOD approves — you are notified</div>
+          <div class="step-desc">When your HOD approves, you will receive an email update in your acknowledgement thread confirming that your request is now queued for our team to begin.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--indigo)">4</div>
+        <div class="step-body">
+          <div class="step-title">Work begins — you are notified</div>
+          <div class="step-desc">When our team starts working on your request, you will receive another update in the same email thread. If we need any clarification, we will reach out via that same thread — watch your inbox.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--green)">5</div>
+        <div class="step-body">
+          <div class="step-title">Completed — you are notified</div>
+          <div class="step-desc">When your project is ready, you will receive a final email in the thread. Please collect your deliverable from the Digital Communications office. For digital files, we will share them via Google Drive.</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout callout-rust">
+      <strong>If your HOD rejects the request</strong>
+      You will not receive an automatic notification for a rejected request. Your HOD will communicate with you directly. If you believe the request should proceed, speak with your HOD and submit a new request once resolved.
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="guide-section" id="s5">
+    <span class="section-num">Section 5</span>
+    <h2>Tracking Your Request</h2>
+    <p>You can check the current status of all your submitted requests at any time by visiting <strong>My Requests</strong> in the navigation bar at the top of the page.</p>
+    <p>Each request card shows your reference number, the request type, due date, and current status. Click on any card to expand it and see the full progress tracker and your request details.</p>
+    <div class="callout callout-green">
+      <strong>What the statuses mean</strong>
+      <br>
+      <strong>Awaiting HOD Approval</strong> — Your request has been submitted. Your HOD has been notified and needs to endorse it before we can begin.<br><br>
+      <strong>HOD Approved</strong> — Your HOD has endorsed your request. It is in our team's queue.<br><br>
+      <strong>In Progress</strong> — Our team is actively working on your request.<br><br>
+      <strong>Completed</strong> — Your project is ready for collection.
+    </div>
+    <div class="callout callout-amber">
+      <strong>If your status does not seem to be moving</strong>
+      Check whether your HOD has approved the request — this is the most common cause of delays. If it has been approved and you have not heard anything in a while, reply to your acknowledgement email thread to follow up with our team.
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="guide-section" id="s6">
+    <span class="section-num">Section 6</span>
+    <h2>How to Communicate With Our Team</h2>
+    <p>All communication about your request happens in <strong>one place only</strong> — the acknowledgement email you received when you submitted your request.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Find your acknowledgement email</div>
+          <div class="step-desc">Search your inbox for an email from <strong>digitalcomms@qiu.edu.my</strong> with your reference number in the subject line, for example: <em>[QIU-2025-0001] Job Request — Poster · Faculty of Health Sciences</em></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Reply to that email — do not write a new one</div>
+          <div class="step-desc">If you want to add more information, share additional files, or ask about your request — click <strong>Reply</strong> on that email. All replies go into the same conversation thread. <strong>Do not send a separate new email to Digital Comms</strong> — it will not be linked to your request and may not be seen.</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout callout-indigo">
+      <strong>Why we do it this way</strong>
+      By keeping all communication in one email thread, nothing gets lost. Every reply is automatically attached to your reference number. Our team can see the full conversation without hunting through separate emails. And you have a complete record of everything in one place.
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="guide-section" id="s7">
+    <span class="section-num">Section 7</span>
+    <h2>Sharing Supporting Materials</h2>
+    <p>If you have files to share with us — logos, photos, existing documents, reference images — please use Google Drive. Do not attach large files to emails.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Upload your files to Google Drive</div>
+          <div class="step-desc">Open <strong>drive.google.com</strong> and create a new folder for your request (e.g. "QIU-2025-0001 Symposium Poster"). Upload all your files into this folder.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Set the correct sharing permission</div>
+          <div class="step-desc">Right-click the folder → <strong>Share</strong> → <strong>Get link</strong> → change the access from "Restricted" to <strong>"Quest International University — Anyone with the link can view."</strong> This is critical. If the folder is still set to Restricted, our team will see a "You need to request access" error and cannot open your files.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Copy the link and paste it into the form</div>
+          <div class="step-desc">Copy the shareable link and paste it into the <strong>Supporting Materials — Google Drive Link</strong> field on the request form. If you forget before submitting, reply to your acknowledgement email with the Drive link.</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout callout-amber">
+      <strong>Common mistake to avoid</strong>
+      Many people share a link but forget to change the permission from "Restricted." Always double-check before submitting. You can test it by opening the link in a private/incognito browser window — if it asks you to request access, the permission is still restricted.
+    </div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="guide-section" id="s8">
+    <span class="section-num">Section 8</span>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq">
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How long will my request take?</div>
+        <div class="faq-a">Most requests take <strong>10–14 working days</strong> from the point of HOD approval. Complex requests such as videos, booklets, or exhibition booth designs may take longer. Merchandise and T-shirts require COO approval first, which adds to the timeline. If you have a hard deadline, please flag it clearly in your description and ensure you are submitting with enough lead time.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">My HOD hasn't approved yet — what do I do?</div>
+        <div class="faq-a">We cannot begin work until your HOD endorses the request. Please follow up with them directly. They would have received an email from digitalcomms@qiu.edu.my asking them to approve. If they cannot find it, ask them to check their spam folder or contact them in person.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">I forgot to include some information — how do I add it?</div>
+        <div class="faq-a">Find the acknowledgement email you received from digitalcomms@qiu.edu.my and reply to it with the additional information. Do not submit a new request. Our team will see your reply in the same thread as your original request.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I submit one request for multiple items?</div>
+        <div class="faq-a">Yes — if multiple items are for the same project or event, you can submit them in one request. Select the primary category and describe all the items clearly in the description field, including individual sizes, quantities, and specifications for each item. If the items are for completely different projects, please submit separate requests.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">I need this urgently — can I get it done faster?</div>
+        <div class="faq-a">Please submit your request as normal and clearly state the urgency and reason in the description field. Our team will review and contact you via the email thread to discuss whether an expedited timeline is possible. We cannot guarantee rushed requests, especially if our team already has a full schedule. Planning ahead is the best way to avoid this situation.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">My status has been "In Progress" for a long time — what should I do?</div>
+        <div class="faq-a">Reply to your acknowledgement email thread and ask for an update. Include your reference number in the message. Our team will respond and let you know the current status of your project.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">I need to make changes to a request I already submitted — what do I do?</div>
+        <div class="faq-a">Reply to your acknowledgement email thread as soon as possible with the changes you need. If work has not started yet, we can update the brief. If work has already started, changes may require additional time — please communicate this early.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Who do I contact if something is not working on this platform?</div>
+        <div class="faq-a">Email digitalcomms@qiu.edu.my directly and describe the issue. Please include what page you were on and what you were trying to do.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleFaq(el) {
+    var item = el.closest('.faq-item');
+    var isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+    if (!isOpen) { item.classList.add('open'); }
+  }
+</script>
+</body>
+</html>
