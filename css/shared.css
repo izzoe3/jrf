@@ -1,0 +1,215 @@
+/* ============================================================
+   shared.css — QIU Digital Communications Job Request System
+   Used by: all pages
+   ============================================================ */
+
+/* ── DESIGN TOKENS ── */
+:root {
+  --ink: #0f0e0d;
+  --paper: #f5f2ee;
+  --paper-dark: #f0ede8;
+  --white: #fff;
+  --rust: #c0392b;
+  --rust-light: #fdf0ee;
+  --gold: #c9a84c;
+  --muted: #7a7570;
+  --border: #d6d0c8;
+  --green: #1a6b45;
+  --green-light: #eaf5ef;
+  --amber: #b45309;
+  --amber-light: #fef3c7;
+  --indigo: #3730a3;
+  --indigo-light: #eef2ff;
+  --gray: #6b7280;
+  --gray-light: #f3f4f6;
+  --sidebar-bg: #181614;
+}
+
+/* ── RESET ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── BASE ── */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ── TOP NAVIGATION BAR ── */
+.topband {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.brand span { color: var(--gold); }
+
+nav { display: flex; gap: 2px; }
+
+nav a {
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 7px 13px;
+  border-radius: 3px;
+  transition: all 0.18s;
+}
+nav a:hover {
+  color: var(--paper);
+  background: rgba(255, 255, 255, 0.07);
+}
+nav a.active {
+  color: var(--gold);
+  background: rgba(201, 168, 76, 0.1);
+}
+
+/* ── SSO BADGE ── */
+.sso-badge {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sso-dot {
+  width: 6px;
+  height: 6px;
+  background: #4ade80;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── HERO BLOCK ── */
+.hero {
+  padding: 52px 40px 40px;
+  background: linear-gradient(135deg, #181614 0%, #2a231e 100%);
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  font-weight: 800;
+  font-size: 120px;
+  color: rgba(255, 255, 255, 0.025);
+  position: absolute;
+  right: 0;
+  top: -10px;
+  line-height: 1;
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  padding: 4px 12px;
+  border-radius: 2px;
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-weight: 800;
+  font-size: clamp(24px, 4vw, 42px);
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+.hero p {
+  font-size: 14px;
+  font-weight: 300;
+  opacity: 0.6;
+  max-width: 480px;
+  line-height: 1.7;
+}
+
+/* ── SHARED BUTTONS ── */
+.btn {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 11px 26px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary {
+  background: var(--rust);
+  color: var(--white);
+}
+.btn-primary:hover {
+  background: #a93226;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(192, 57, 43, 0.3);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+}
+.btn-outline:hover { border-color: var(--ink); }
+
+/* ── STATUS BADGES (shared across pages) ── */
+.status-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  display: inline-block;
+  white-space: nowrap;
+}
+.s-pending_approval, .badge-pending   { background: var(--amber-light); color: var(--amber); }
+.s-approved,         .badge-approved  { background: var(--green-light); color: var(--green); }
+.s-in_progress,      .badge-in_progress { background: var(--indigo-light); color: var(--indigo); }
+.s-on_hold,          .badge-on_hold   { background: var(--gray-light); color: var(--gray); }
+.s-completed,        .badge-completed { background: #f0fdf4; color: #166534; }
+.s-rejected,         .badge-rejected  { background: var(--rust-light); color: var(--rust); }
+
+/* ── CATEGORY PILL ── */
+.cat-pill {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── RESPONSIVE BASE ── */
+@media (max-width: 640px) {
+  .topband { padding: 0 20px; }
+  .hero    { padding-left: 20px; padding-right: 20px; }
+  .sso-badge { display: none; }
+}

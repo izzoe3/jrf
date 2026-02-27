@@ -5,206 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — QIU Digital Communications</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #0f0e0d; --paper: #f0ede8; --white: #fff;
-    --rust: #c0392b; --rust-light: #fdf0ee;
-    --gold: #c9a84c; --muted: #7a7570; --border: #d6d0c8;
-    --green: #1a6b45; --green-light: #eaf5ef;
-    --amber: #b45309; --amber-light: #fef3c7;
-    --indigo: #3730a3; --indigo-light: #eef2ff;
-    --gray: #6b7280; --gray-light: #f3f4f6;
-    --sidebar: #181614;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Poppins', sans-serif; background: var(--paper); color: var(--ink); display: flex; min-height: 100vh; }
-
-  /* ── SIDEBAR ── */
-  .sidebar { width: 224px; background: var(--sidebar); color: var(--paper); height: 100vh; position: fixed; left: 0; top: 0; display: flex; flex-direction: column; padding: 24px 0; z-index: 30; }
-  .sidebar .logo { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; padding: 0 22px 22px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-  .sidebar .logo span { color: var(--gold); }
-  .sidebar .logo small { display: block; font-size: 10px; font-weight: 400; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; margin-top: 3px; }
-  .sb-section { padding: 16px 0 0; }
-  .sb-label { font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 0 22px; margin-bottom: 6px; }
-  .sb-link { display: flex; align-items: center; gap: 10px; padding: 9px 22px; font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; transition: all 0.16s; border-left: 3px solid transparent; cursor: pointer; }
-  .sb-link:hover { color: var(--paper); background: rgba(255,255,255,0.05); }
-  .sb-link.active { color: var(--paper); background: rgba(255,255,255,0.08); border-left-color: var(--gold); }
-  .sb-link .ic { font-size: 14px; flex-shrink: 0; }
-  .sb-badge { margin-left: auto; background: var(--rust); color: white; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; }
-  .sidebar-footer { margin-top: auto; padding: 18px 22px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px; color: rgba(255,255,255,0.25); line-height: 1.7; }
-  .sso-row { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 11px; color: rgba(255,255,255,0.3); }
-  .sso-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; }
-
-  /* ── MAIN ── */
-  .main { margin-left: 224px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
-
-  .topbar { background: var(--white); border-bottom: 1px solid var(--border); height: 56px; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 20; }
-  .topbar h1 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 18px; }
-  .topbar-right { display: flex; align-items: center; gap: 10px; }
-  .btn { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; padding: 9px 20px; border-radius: 4px; border: none; cursor: pointer; transition: all 0.18s; text-decoration: none; display: inline-block; }
-  .btn-primary { background: var(--rust); color: white; }
-  .btn-primary:hover { background: #a93226; }
-  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
-  .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
-
-  .content { padding: 28px 32px 80px; }
-
-  /* ── STATS ── */
-  .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; }
-  .stat { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 18px 18px 14px; position: relative; overflow: hidden; cursor: pointer; transition: box-shadow 0.18s; }
-  .stat:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
-  .stat::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
-  .stat.all::after { background: var(--ink); }
-  .stat.pending::after { background: var(--amber); }
-  .stat.approved::after { background: var(--green); }
-  .stat.inprog::after { background: var(--indigo); }
-  .stat.done::after { background: var(--gold); }
-  .stat .s-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 8px; }
-  .stat .s-num { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 30px; line-height: 1; }
-  .stat.all .s-num { color: var(--ink); }
-  .stat.pending .s-num { color: var(--amber); }
-  .stat.approved .s-num { color: var(--green); }
-  .stat.inprog .s-num { color: var(--indigo); }
-  .stat.done .s-num { color: var(--gold); }
-
-  /* ── TOOLBAR ── */
-  .toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
-  .filter-pill { font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--white); color: var(--muted); cursor: pointer; transition: all 0.15s; }
-  .filter-pill:hover { border-color: var(--ink); color: var(--ink); }
-  .filter-pill.on { background: var(--ink); color: white; border-color: var(--ink); }
-  .search { margin-left: auto; padding: 8px 14px; border: 1px solid var(--border); border-radius: 20px; font-size: 13px; font-family: 'Poppins', sans-serif; background: var(--white); width: 200px; transition: border-color 0.2s; }
-  .search:focus { outline: none; border-color: var(--rust); }
-  .view-toggle { display: flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
-  .view-btn { padding: 7px 13px; font-size: 12px; background: var(--white); border: none; cursor: pointer; color: var(--muted); transition: all 0.15s; }
-  .view-btn.on { background: var(--ink); color: white; }
-
-  /* ── TABLE VIEW ── */
-  .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-  table { width: 100%; border-collapse: collapse; }
-  thead { background: var(--paper); }
-  th { text-align: left; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 11px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
-  tbody tr { border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.12s; }
-  tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover { background: #faf8f5; }
-  td { padding: 13px 14px; font-size: 13px; vertical-align: middle; }
-  .td-ref { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px; color: var(--rust); white-space: nowrap; }
-  .td-name .name { font-weight: 500; }
-  .td-name .dept { font-size: 11px; color: var(--muted); margin-top: 1px; }
-  .td-due.overdue { color: var(--rust); font-weight: 500; }
-
-  .status-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; display: inline-block; white-space: nowrap; }
-  .sb-pending_approval { background: var(--amber-light); color: var(--amber); }
-  .sb-approved { background: var(--green-light); color: var(--green); }
-  .sb-rejected { background: var(--rust-light); color: var(--rust); }
-  .sb-in_progress { background: var(--indigo-light); color: var(--indigo); }
-  .sb-on_hold { background: var(--gray-light); color: var(--gray); }
-  .sb-completed { background: #f0fdf4; color: #166534; }
-
-  .cat-pill { font-size: 11px; padding: 3px 9px; border-radius: 20px; background: var(--paper); border: 1px solid var(--border); color: var(--muted); white-space: nowrap; }
-
-  /* ASSIGNED CHIP */
-  .assigned-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); background: var(--paper); border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; white-space: nowrap; }
-  .av { width: 20px; height: 20px; border-radius: 50%; background: var(--ink); color: white; font-size: 8px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .unassigned { font-size: 11px; color: var(--muted); font-style: italic; }
-
-  /* ── KANBAN VIEW ── */
-  .kanban { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .kanban-col { background: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .kanban-col-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .kanban-col-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; }
-  .kanban-count { font-size: 11px; font-weight: 700; background: var(--paper); padding: 2px 8px; border-radius: 10px; color: var(--muted); }
-  .kanban-cards { padding: 12px; display: flex; flex-direction: column; gap: 10px; min-height: 100px; }
-  .k-card { background: var(--paper); border: 1px solid var(--border); border-radius: 6px; padding: 12px 13px; cursor: pointer; transition: all 0.16s; }
-  .k-card:hover { border-color: var(--rust); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-  .k-ref { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; color: var(--rust); margin-bottom: 4px; }
-  .k-title { font-size: 12px; font-weight: 500; line-height: 1.4; margin-bottom: 6px; }
-  .k-meta { font-size: 11px; color: var(--muted); display: flex; align-items: center; justify-content: space-between; }
-  .k-due { font-size: 10px; color: var(--muted); }
-  .k-due.overdue { color: var(--rust); }
-
-  /* ── DRAWER ── */
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(15,14,13,0.5); z-index: 50; backdrop-filter: blur(2px); }
-  .overlay.open { display: block; }
-  .drawer { position: fixed; right: -520px; top: 0; bottom: 0; width: 500px; background: var(--white); z-index: 51; overflow-y: auto; transition: right 0.3s cubic-bezier(0.4,0,0.2,1); box-shadow: -10px 0 40px rgba(0,0,0,0.1); }
-  .drawer.open { right: 0; }
-
-  .drawer-top { padding: 22px 26px; background: var(--paper); border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; position: sticky; top: 0; z-index: 2; }
-  .drawer-ref { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 16px; color: var(--rust); }
-  .drawer-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted); line-height: 1; padding: 0 4px; }
-  .close-btn:hover { color: var(--ink); }
-
-  .drawer-body { padding: 22px 26px; }
-  .d-section { margin-bottom: 24px; }
-  .d-section-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
-  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .info-item dt { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 3px; }
-  .info-item dd { font-size: 13px; line-height: 1.5; }
-  .desc-box { background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 12px 14px; font-size: 13px; line-height: 1.7; margin-bottom: 12px; }
-
-  /* ASSIGN CONTROL */
-  .assign-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .assign-select {
-    flex: 1; padding: 9px 12px; border: 1px solid var(--border); border-radius: 4px;
-    font-family: 'Poppins', sans-serif; font-size: 13px; background: var(--white);
-    -webkit-appearance: none; appearance: none; cursor: pointer;
-  }
-  .assign-select:focus { outline: none; border-color: var(--rust); }
-  .assign-btn { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 18px; background: var(--ink); color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap; transition: background 0.18s; }
-  .assign-btn:hover { background: #333; }
-  .assigned-display { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-  .reassign-link { font-size: 12px; color: var(--muted); cursor: pointer; text-decoration: underline; margin-left: 6px; }
-  .reassign-link:hover { color: var(--rust); }
-
-  /* STAGE BUTTONS */
-  .stage-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-  .stage-btn {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 7px 14px; border-radius: 4px; border: 1.5px solid transparent;
-    cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.15s;
-  }
-  .stage-btn:hover { opacity: 0.8; transform: translateY(-1px); }
-  .stage-btn.cur { box-shadow: 0 0 0 2px currentColor; }
-  .stage-btn[data-s="pending_approval"] { background: var(--amber-light); color: var(--amber); border-color: rgba(180,83,9,0.2); }
-  .stage-btn[data-s="approved"] { background: var(--green-light); color: var(--green); border-color: rgba(26,107,69,0.2); }
-  .stage-btn[data-s="in_progress"] { background: var(--indigo-light); color: var(--indigo); border-color: rgba(55,48,163,0.2); }
-  .stage-btn[data-s="on_hold"] { background: var(--gray-light); color: var(--gray); border-color: #d1d5db; }
-  .stage-btn[data-s="completed"] { background: #f0fdf4; color: #166534; border-color: rgba(22,101,52,0.2); }
-  .stage-btn[data-s="rejected"] { background: var(--rust-light); color: var(--rust); border-color: rgba(192,57,43,0.2); }
-
-  /* NOTES */
-  .notes-input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 4px; font-family: 'Poppins', sans-serif; font-size: 13px; resize: vertical; min-height: 80px; margin-bottom: 10px; line-height: 1.6; }
-  .notes-input:focus { outline: none; border-color: var(--rust); }
-  .save-btn { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; padding: 9px 20px; background: var(--ink); color: white; border: none; border-radius: 4px; cursor: pointer; }
-  .save-btn:hover { background: #333; }
-
-  /* TIMELINE */
-  .tl { list-style: none; padding-left: 18px; position: relative; }
-  .tl::before { content: ''; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 1px; background: var(--border); }
-  .tl li { position: relative; padding: 0 0 14px 18px; }
-  .tl li::before { content: ''; position: absolute; left: -13px; top: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--border); border: 2px solid var(--white); }
-  .tl li.latest::before { background: var(--rust); }
-  .tl-action { font-size: 13px; font-weight: 500; }
-  .tl-by { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-  /* EMAIL LINK in drawer */
-  .empty-row { text-align: center; padding: 60px 20px; }
-  .empty-row .icon { font-size: 36px; margin-bottom: 12px; }
-  .empty-row h3 { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 6px; }
-  .empty-row p { font-size: 13px; color: var(--muted); }
-
-  @media(max-width:900px) {
-    .sidebar { display: none; }
-    .main { margin-left: 0; }
-    .stats-row { grid-template-columns: repeat(3,1fr); }
-    .kanban { grid-template-columns: 1fr 1fr; }
-    .drawer { width: 100%; }
-  }
-</style>
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 
-<!-- SIDEBAR -->
+<!-- ── SIDEBAR ── -->
 <aside class="sidebar">
   <div class="logo">QIU <span>Digital</span><small>Communications Team</small></div>
   <div class="sb-section">
@@ -217,7 +23,10 @@
   <div class="sb-section">
     <div class="sb-label">Quick Filters</div>
     <a class="sb-link" onclick="setFilter('all')"><span class="ic">◉</span>All Requests</a>
-    <a class="sb-link" onclick="setFilter('pending_approval')"><span class="ic">⏳</span>Awaiting Approval <span class="sb-badge" id="sb-pending">0</span></a>
+    <a class="sb-link" onclick="setFilter('pending_approval')">
+      <span class="ic">⏳</span>Awaiting Approval
+      <span class="sb-badge" id="sb-pending" style="display:none">0</span>
+    </a>
     <a class="sb-link" onclick="setFilter('approved')"><span class="ic">✦</span>Ready to Start</a>
     <a class="sb-link" onclick="setFilter('in_progress')"><span class="ic">▶</span>In Progress</a>
     <a class="sb-link" onclick="setFilter('on_hold')"><span class="ic">⏸</span>On Hold</a>
@@ -229,60 +38,87 @@
   </div>
 </aside>
 
-<!-- MAIN -->
+<!-- ── MAIN ── -->
 <div class="main">
+
+  <!-- Top Bar -->
   <div class="topbar">
     <h1>Team Dashboard</h1>
     <div class="topbar-right">
-      <button class="btn btn-ghost" onclick="seedDemo()">Load Demo Data</button>
-      <a href="index.html" class="btn btn-primary">+ New Request</a>
+      <button class="btn-dash btn-dash-ghost" onclick="seedDemo()">Load Demo Data</button>
+      <a href="index.html" class="btn-dash btn-dash-primary">+ New Request</a>
     </div>
   </div>
 
   <div class="content">
-    <!-- STATS -->
-    <div class="stats-row">
-      <div class="stat all" onclick="setFilter('all')"><div class="s-label">Total</div><div class="s-num" id="sn-total">0</div></div>
-      <div class="stat pending" onclick="setFilter('pending_approval')"><div class="s-label">Awaiting Approval</div><div class="s-num" id="sn-pending">0</div></div>
-      <div class="stat approved" onclick="setFilter('approved')"><div class="s-label">Approved / Queue</div><div class="s-num" id="sn-approved">0</div></div>
-      <div class="stat inprog" onclick="setFilter('in_progress')"><div class="s-label">In Progress</div><div class="s-num" id="sn-inprog">0</div></div>
-      <div class="stat done" onclick="setFilter('completed')"><div class="s-label">Completed</div><div class="s-num" id="sn-done">0</div></div>
-    </div>
 
-    <!-- TOOLBAR -->
-    <div class="toolbar">
-      <button class="filter-pill on" onclick="setFilter('all',this)">All</button>
-      <button class="filter-pill" onclick="setFilter('pending_approval',this)">⏳ Awaiting Approval</button>
-      <button class="filter-pill" onclick="setFilter('approved',this)">✓ Approved</button>
-      <button class="filter-pill" onclick="setFilter('in_progress',this)">▶ In Progress</button>
-      <button class="filter-pill" onclick="setFilter('on_hold',this)">⏸ On Hold</button>
-      <button class="filter-pill" onclick="setFilter('completed',this)">◎ Completed</button>
-      <input type="text" class="search" placeholder="Search…" oninput="doSearch(this.value)">
-      <div class="view-toggle">
-        <button class="view-btn on" id="vt-table" onclick="setView('table')">≡ List</button>
-        <button class="view-btn" id="vt-kanban" onclick="setView('kanban')">⊞ Board</button>
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat all"     onclick="setFilter('all')">
+        <div class="s-label">Total</div>
+        <div class="s-num" id="sn-total">0</div>
+      </div>
+      <div class="stat pending" onclick="setFilter('pending_approval')">
+        <div class="s-label">Awaiting Approval</div>
+        <div class="s-num" id="sn-pending">0</div>
+      </div>
+      <div class="stat approved" onclick="setFilter('approved')">
+        <div class="s-label">Approved / Queue</div>
+        <div class="s-num" id="sn-approved">0</div>
+      </div>
+      <div class="stat inprog" onclick="setFilter('in_progress')">
+        <div class="s-label">In Progress</div>
+        <div class="s-num" id="sn-inprog">0</div>
+      </div>
+      <div class="stat done" onclick="setFilter('completed')">
+        <div class="s-label">Completed</div>
+        <div class="s-num" id="sn-done">0</div>
       </div>
     </div>
 
-    <!-- VIEWS -->
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <button class="filter-pill on"  onclick="setFilter('all',this)">All</button>
+      <button class="filter-pill"     onclick="setFilter('pending_approval',this)">⏳ Awaiting Approval</button>
+      <button class="filter-pill"     onclick="setFilter('approved',this)">✓ Approved</button>
+      <button class="filter-pill"     onclick="setFilter('in_progress',this)">▶ In Progress</button>
+      <button class="filter-pill"     onclick="setFilter('on_hold',this)">⏸ On Hold</button>
+      <button class="filter-pill"     onclick="setFilter('completed',this)">◎ Completed</button>
+      <input type="text" class="search" placeholder="Search…" oninput="doSearch(this.value)">
+      <div class="view-toggle">
+        <button class="view-btn on" id="vt-table"  onclick="setView('table')">≡ List</button>
+        <button class="view-btn"    id="vt-kanban" onclick="setView('kanban')">⊞ Board</button>
+      </div>
+    </div>
+
+    <!-- Table View -->
     <div id="view-table">
       <div class="table-wrap">
         <table>
-          <thead><tr>
-            <th>Ref</th><th>Requestor</th><th>Category</th><th>Assigned To</th><th>Due</th><th>Status</th>
-          </tr></thead>
+          <thead>
+            <tr>
+              <th>Ref</th>
+              <th>Requestor</th>
+              <th>Category</th>
+              <th>Assigned To</th>
+              <th>Due</th>
+              <th>Status</th>
+            </tr>
+          </thead>
           <tbody id="tBody"></tbody>
         </table>
       </div>
     </div>
 
+    <!-- Kanban View -->
     <div id="view-kanban" style="display:none">
       <div class="kanban" id="kanbanBoard"></div>
     </div>
+
   </div>
 </div>
 
-<!-- OVERLAY + DRAWER -->
+<!-- ── OVERLAY + DRAWER ── -->
 <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer">
   <div class="drawer-top">
@@ -295,279 +131,8 @@
   <div class="drawer-body" id="drawerBody"></div>
 </div>
 
-<script>
-  // ── TEAM MEMBERS (in production: fetched from Google Workspace directory) ──
-  const TEAM = ['Amirah Zainudin', 'Hafiz Nordin', 'Syazwan Kamarudin', 'Nurul Ain', 'Fadzrin Mahmud'];
-  const CAT = { printed:'🖨️ Printed', digital:'📱 Digital', website:'🌐 Website', event:'📸 Event', video:'🎬 Video', other:'✦ Other' };
-  const STAGE_LABELS = { pending_approval:'Awaiting Approval', approved:'Approved', rejected:'Rejected', in_progress:'In Progress', on_hold:'On Hold', completed:'Completed' };
-  const KANBAN_COLS = [
-    { key: 'pending_approval', label: 'Awaiting Approval', color: '#b45309' },
-    { key: 'approved',         label: 'Approved / Queue',  color: '#1a6b45' },
-    { key: 'in_progress',      label: 'In Progress',       color: '#3730a3' },
-    { key: 'completed',        label: 'Completed',         color: '#166534' },
-  ];
-
-  let curFilter = 'all', curSearch = '', curView = 'table', curDrawerIdx = null;
-
-  const getAll = () => JSON.parse(localStorage.getItem('qiu_requests') || '[]');
-  const saveAll = d => localStorage.setItem('qiu_requests', JSON.stringify(d));
-
-  function fmtDate(iso) { if(!iso) return '—'; return new Date(iso).toLocaleDateString('en-MY',{day:'numeric',month:'short',year:'numeric'}); }
-  function isOverdue(iso) { return iso && new Date(iso) < new Date() && new Date(iso).toDateString() !== new Date().toDateString(); }
-  function initials(n) { return n?.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()||'??'; }
-
-  function updateStats() {
-    const all = getAll();
-    document.getElementById('sn-total').textContent = all.length;
-    document.getElementById('sn-pending').textContent = all.filter(r=>r.status==='pending_approval').length;
-    document.getElementById('sn-approved').textContent = all.filter(r=>r.status==='approved').length;
-    document.getElementById('sn-inprog').textContent = all.filter(r=>r.status==='in_progress').length;
-    document.getElementById('sn-done').textContent = all.filter(r=>r.status==='completed').length;
-    const pCount = all.filter(r=>r.status==='pending_approval').length;
-    document.getElementById('sb-pending').textContent = pCount;
-    document.getElementById('sb-pending').style.display = pCount ? 'inline' : 'none';
-  }
-
-  function filtered() {
-    return getAll().map((r,i)=>({...r,_i:i})).filter(r => {
-      if (curFilter !== 'all' && r.status !== curFilter) return false;
-      if (curSearch) {
-        const q = curSearch.toLowerCase();
-        return (r.ref+r.requestedBy+r.department+r.category+(r.assignedTo||'')+r.description).toLowerCase().includes(q);
-      }
-      return true;
-    });
-  }
-
-  function renderTable() {
-    const rows = filtered();
-    const tbody = document.getElementById('tBody');
-    if (!rows.length) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-row"><div class="icon">🔍</div><h3>No requests found</h3><p>Try changing your filters.</p></div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = rows.map(r => `
-      <tr onclick="openDrawer(${r._i})">
-        <td class="td-ref">${r.ref}</td>
-        <td class="td-name"><div class="name">${r.requestedBy}</div><div class="dept">${r.department}</div></td>
-        <td><span class="cat-pill">${CAT[r.category]||r.category}</span></td>
-        <td>${r.assignedTo
-          ? `<span class="assigned-chip"><div class="av">${initials(r.assignedTo)}</div>${r.assignedTo}</span>`
-          : `<span class="unassigned">Unassigned</span>`}</td>
-        <td class="td-due ${isOverdue(r.dueDate)?'overdue':''}">${fmtDate(r.dueDate)}</td>
-        <td><span class="status-badge sb-${r.status}">${STAGE_LABELS[r.status]||r.status}</span></td>
-      </tr>
-    `).join('');
-  }
-
-  function renderKanban() {
-    const all = getAll().map((r,i)=>({...r,_i:i}));
-    const board = document.getElementById('kanbanBoard');
-    board.innerHTML = KANBAN_COLS.map(col => {
-      const cards = all.filter(r => r.status === col.key).filter(r => {
-        if (curSearch) { const q=curSearch.toLowerCase(); return (r.ref+r.requestedBy+r.category).toLowerCase().includes(q); }
-        return true;
-      });
-      return `
-        <div class="kanban-col">
-          <div class="kanban-col-header">
-            <span class="kanban-col-title" style="color:${col.color}">${col.label}</span>
-            <span class="kanban-count">${cards.length}</span>
-          </div>
-          <div class="kanban-cards">
-            ${cards.length ? cards.map(r => `
-              <div class="k-card" onclick="openDrawer(${r._i})">
-                <div class="k-ref">${r.ref}</div>
-                <div class="k-title">${r.jobPurpose?.substring(0,55)}${(r.jobPurpose?.length||0)>55?'…':''}</div>
-                <div class="k-meta">
-                  <span>${CAT[r.category]||r.category}</span>
-                  <span class="k-due ${isOverdue(r.dueDate)?'overdue':''}">Due ${fmtDate(r.dueDate)}</span>
-                </div>
-                ${r.assignedTo?`<div style="margin-top:6px"><span class="assigned-chip" style="font-size:10px"><div class="av">${initials(r.assignedTo)}</div>${r.assignedTo}</span></div>`:''}
-              </div>
-            `).join('') : `<div style="font-size:12px;color:var(--muted);padding:8px;text-align:center;font-style:italic">No requests</div>`}
-          </div>
-        </div>`;
-    }).join('');
-  }
-
-  function render() { updateStats(); if (curView === 'table') renderTable(); else renderKanban(); }
-
-  function setFilter(f, btn) {
-    curFilter = f;
-    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('on'));
-    if (btn) btn.classList.add('on');
-    render();
-  }
-  function doSearch(q) { curSearch = q; render(); }
-  function setView(v) {
-    curView = v;
-    document.getElementById('view-table').style.display = v === 'table' ? '' : 'none';
-    document.getElementById('view-kanban').style.display = v === 'kanban' ? '' : 'none';
-    document.getElementById('vt-table').classList.toggle('on', v === 'table');
-    document.getElementById('vt-kanban').classList.toggle('on', v === 'kanban');
-    render();
-  }
-
-  // ── DRAWER ──
-  let showAssignSelect = false;
-
-  function openDrawer(idx) {
-    curDrawerIdx = idx;
-    showAssignSelect = false;
-    buildDrawer(idx);
-    document.getElementById('overlay').classList.add('open');
-    document.getElementById('drawer').classList.add('open');
-  }
-
-  function closeDrawer() {
-    document.getElementById('overlay').classList.remove('open');
-    document.getElementById('drawer').classList.remove('open');
-    curDrawerIdx = null;
-  }
-
-  function buildDrawer(idx) {
-    const r = getAll()[idx];
-    document.getElementById('d-ref').textContent = r.ref;
-    document.getElementById('d-sub').textContent = `${r.requestedBy} · ${r.department} · Due ${fmtDate(r.dueDate)}`;
-
-    const tl = (r.timeline || [{ action: 'Request submitted', by: r.requestedBy, date: r.submittedAt }]);
-
-    document.getElementById('drawerBody').innerHTML = `
-
-      <!-- REQUESTOR INFO -->
-      <div class="d-section">
-        <div class="d-section-title">Requestor</div>
-        <div class="info-grid">
-          <div class="info-item"><dt>Name</dt><dd>${r.requestedBy}</dd></div>
-          <div class="info-item"><dt>Department</dt><dd>${r.department}</dd></div>
-          <div class="info-item"><dt>Email</dt><dd>${r.email}</dd></div>
-          <div class="info-item"><dt>HOD Email</dt><dd>${r.hodEmail}</dd></div>
-          <div class="info-item"><dt>Submitted</dt><dd>${fmtDate(r.submittedAt)}</dd></div>
-          <div class="info-item"><dt>Due Date</dt><dd class="${isOverdue(r.dueDate)?'overdue':''}">${fmtDate(r.dueDate)}</dd></div>
-          <div class="info-item"><dt>Category</dt><dd>${CAT[r.category]||r.category}${r.subtypes?.length?' — '+r.subtypes.join(', '):''}</dd></div>
-          ${r.size?`<div class="info-item"><dt>Specs</dt><dd>${r.size}${r.colour?' · '+r.colour:''}${r.bleed?' · '+r.bleed:''}</dd></div>`:''}
-        </div>
-      </div>
-
-      <!-- PROJECT DETAILS -->
-      <div class="d-section">
-        <div class="d-section-title">Project Details</div>
-        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">Job Purpose</div>
-        <div class="desc-box">${r.jobPurpose}</div>
-        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">Description</div>
-        <div class="desc-box">${r.description}</div>
-        ${r.references?`<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">References</div><div class="desc-box">${r.references}</div>`:''}
-      </div>
-
-      <!-- ASSIGN -->
-      <div class="d-section">
-        <div class="d-section-title">Assigned To</div>
-        <div id="assignSection">
-          ${r.assignedTo && !showAssignSelect
-            ? `<div class="assigned-display">
-                <span class="assigned-chip" style="font-size:13px">
-                  <div class="av" style="width:28px;height:28px;font-size:11px">${initials(r.assignedTo)}</div>
-                  ${r.assignedTo}
-                </span>
-                <span class="reassign-link" onclick="showAssign()">Reassign</span>
-              </div>`
-            : `<div class="assign-row">
-                <select class="assign-select" id="assignSelect">
-                  <option value="">— Select team member —</option>
-                  ${TEAM.map(m => `<option value="${m}" ${r.assignedTo===m?'selected':''}>${m}</option>`).join('')}
-                </select>
-                <button class="assign-btn" onclick="saveAssign(${idx})">Assign</button>
-              </div>
-              <div style="font-size:12px;color:var(--muted)">In production: populated from Google Workspace directory.</div>`
-          }
-        </div>
-      </div>
-
-      <!-- STATUS -->
-      <div class="d-section">
-        <div class="d-section-title">Update Stage</div>
-        <div class="stage-grid">
-          ${Object.entries(STAGE_LABELS).map(([k,v])=>`<button class="stage-btn ${r.status===k?'cur':''}" data-s="${k}" onclick="changeStatus(${idx},'${k}')">${v}</button>`).join('')}
-        </div>
-      </div>
-
-      <!-- NOTES -->
-      <div class="d-section">
-        <div class="d-section-title">Internal Notes</div>
-        <textarea class="notes-input" id="notesInput" placeholder="Add internal notes, updates, file links…">${r.internalNotes||''}</textarea>
-        <button class="save-btn" onclick="saveNotes(${idx})">Save Notes</button>
-      </div>
-
-      <!-- TIMELINE -->
-      <div class="d-section">
-        <div class="d-section-title">Activity Timeline</div>
-        <ul class="tl">
-          ${[...tl].reverse().map((t,i)=>`
-            <li class="${i===0?'latest':''}">
-              <div class="tl-action">${t.action}</div>
-              <div class="tl-by">${t.by ? 'by '+t.by+' · ' : ''}${fmtDate(t.date)}</div>
-            </li>
-          `).join('')}
-        </ul>
-      </div>
-    `;
-  }
-
-  function showAssign() { showAssignSelect = true; buildDrawer(curDrawerIdx); }
-
-  function saveAssign(idx) {
-    const sel = document.getElementById('assignSelect').value;
-    if (!sel) { alert('Please select a team member.'); return; }
-    const all = getAll();
-    all[idx].assignedTo = sel;
-    all[idx].timeline = all[idx].timeline || [];
-    all[idx].timeline.push({ action: `Assigned to ${sel}`, by: 'Digital Comms Team', date: new Date().toISOString() });
-    saveAll(all);
-    showAssignSelect = false;
-    render();
-    buildDrawer(idx);
-  }
-
-  function changeStatus(idx, status) {
-    const all = getAll();
-    all[idx].status = status;
-    all[idx].timeline = all[idx].timeline || [];
-    all[idx].timeline.push({ action: `Status changed to: ${STAGE_LABELS[status]}`, by: 'Digital Comms Team', date: new Date().toISOString() });
-    saveAll(all);
-    render();
-    buildDrawer(idx);
-  }
-
-  function saveNotes(idx) {
-    const val = document.getElementById('notesInput').value;
-    const all = getAll();
-    all[idx].internalNotes = val;
-    saveAll(all);
-    const btn = event.target;
-    btn.textContent = '✓ Saved';
-    btn.style.background = '#1a6b45';
-    setTimeout(() => { btn.textContent = 'Save Notes'; btn.style.background = ''; }, 1800);
-  }
-
-  // ── DEMO DATA ──
-  function seedDemo() {
-    if (localStorage.getItem('qiu_demo_v2')) { alert('Demo data already loaded.'); return; }
-    const demo = [
-      { ref:'QIU-2025-0004', requestedBy:'Dr. Priya Nair', email:'priya@qiu.edu.my', department:'Faculty of Health Sciences', hodEmail:'dean.health@qiu.edu.my', requestedDate:'2025-01-10', dueDate:'2025-02-01', jobPurpose:'Promotional poster for annual Health Sciences symposium.', category:'printed', subtypes:['Poster'], size:'A1', colour:'Full Colour', bleed:'Required (3mm)', description:'Professional poster for annual symposium. Theme: "Advancing Healthcare in the Digital Age". Speakers: Dato Dr. Hamdan and Dr. Lim Wei Lin.', references:'drive.google.com/...', status:'in_progress', assignedTo:'Amirah Zainudin', internalNotes:'First draft 80% done. Awaiting speaker photos.', submittedAt:'2025-01-10T08:22:00Z', timeline:[{action:'Request submitted',by:'Dr. Priya Nair',date:'2025-01-10T08:22:00Z'},{action:'Endorsed by HOD',by:'HOD',date:'2025-01-11T09:00:00Z'},{action:'Assigned to Amirah Zainudin',by:'Digital Comms Team',date:'2025-01-12T10:00:00Z'},{action:'Status changed to: In Progress',by:'Digital Comms Team',date:'2025-01-13T10:00:00Z'}] },
-      { ref:'QIU-2025-0003', requestedBy:'Ahmad Fauzi', email:'ahmad@qiu.edu.my', department:'Marketing & Communications', hodEmail:'head.mkt@qiu.edu.my', requestedDate:'2025-01-08', dueDate:'2025-01-28', jobPurpose:'Social media campaign for Open Day recruitment.', category:'digital', subtypes:['Social Media Promo','Digital Ad Campaign'], description:'Series of 5 posts for Instagram and Facebook for January Open Day. Target: SPM leavers and parents. Tone: aspirational, modern.', status:'approved', assignedTo:'Hafiz Nordin', internalNotes:'', submittedAt:'2025-01-08T14:10:00Z', timeline:[{action:'Request submitted',by:'Ahmad Fauzi',date:'2025-01-08T14:10:00Z'},{action:'Endorsed by HOD',by:'HOD',date:'2025-01-09T10:30:00Z'},{action:'Assigned to Hafiz Nordin',by:'Digital Comms Team',date:'2025-01-10T09:00:00Z'}] },
-      { ref:'QIU-2025-0002', requestedBy:'Tan Mei Ling', email:'meilinq@qiu.edu.my', department:'Student Affairs', hodEmail:'head.sa@qiu.edu.my', requestedDate:'2025-01-05', dueDate:'2025-01-23', jobPurpose:'Photo & video coverage for Convocation Ceremony 2025.', category:'event', subtypes:['Photo & Video'], description:'Full coverage for 15th Convocation. QIU Main Hall. ~400 graduates. Individual shots, group stage, highlight reel.', status:'pending_approval', assignedTo:null, internalNotes:'', submittedAt:'2025-01-05T10:00:00Z', timeline:[{action:'Request submitted',by:'Tan Mei Ling',date:'2025-01-05T10:00:00Z'}] },
-      { ref:'QIU-2025-0001', requestedBy:'Prof. Razali Hassan', email:'razali@qiu.edu.my', department:'Faculty of Engineering', hodEmail:'dean.eng@qiu.edu.my', requestedDate:'2024-12-20', dueDate:'2025-01-15', jobPurpose:'Department website revamp for Faculty of Engineering.', category:'website', subtypes:['New Page / Section','Website Update / Amendment'], description:'Complete redesign of the engineering faculty webpage. Need updated staff directory, new research page, and updated programme pages.', status:'completed', assignedTo:'Syazwan Kamarudin', internalNotes:'Delivered and signed off by faculty.', submittedAt:'2024-12-20T09:00:00Z', timeline:[{action:'Request submitted',by:'Prof. Razali Hassan',date:'2024-12-20T09:00:00Z'},{action:'Endorsed by HOD',by:'HOD',date:'2024-12-21T09:00:00Z'},{action:'Status changed to: In Progress',by:'Digital Comms Team',date:'2024-12-23T09:00:00Z'},{action:'Status changed to: Completed',by:'Digital Comms Team',date:'2025-01-14T09:00:00Z'}] },
-    ];
-    const cur = getAll();
-    saveAll([...cur, ...demo]);
-    localStorage.setItem('qiu_count', String(cur.length + 4));
-    localStorage.setItem('qiu_demo_v2', '1');
-    render();
-  }
-
-  render();
-  setInterval(render, 6000);
-</script>
+<!-- ── SCRIPTS ── -->
+<script src="js/shared.js"></script>
+<script src="js/dashboard.js"></script>
 </body>
 </html>

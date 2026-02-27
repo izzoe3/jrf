@@ -112,13 +112,19 @@ There are no contact or email buttons in the portal. All communication happens v
 
 Example subject format: `[QIU-2025-0001] Job Request — Poster · Faculty of Health Sciences`
 
-**When a request reaches one of the three public stages**, an automated reply is sent into the same thread:
+**When a request changes stage**, emails are sent as follows:
 
-| Stage | Message to requestor |
-|-------|---------------------|
-| Approved | Their request has been endorsed by their HOD and is queued for the team |
-| In Progress | The team has started work |
-| Completed | The project is done — collect from Digital Comms office |
+| Stage | Email to requestor? | Email to Digital Comms team? |
+|-------|--------------------|-----------------------------|
+| Submitted | ✅ Acknowledgement — starts the thread | ✅ Nudge: "New request submitted — log in to review" |
+| Approved by HOD | ✅ Reply to thread — "Your request has been endorsed and is queued for our team" | ✅ Nudge: "[REF] has been approved by HOD and is ready to be actioned" |
+| In Progress | ✅ Reply to thread — "Our team has started work on your request" | ❌ No notification needed |
+| Completed | ✅ Reply to thread — "Your project is ready — collect from Digital Comms" | ❌ No notification needed |
+| Rejected | ❌ No | ❌ No — HOD communicates directly with their staff |
+| On Hold | ❌ No | ❌ No — team member follows up via the email thread manually |
+| Assigned / Reassigned | ❌ No | ❌ No — internal action only |
+
+The two team notifications (on submission and on HOD approval) are **nudges only** — short emails prompting the team to open the dashboard. They do not need to contain full request details, just the reference number, requestor name, and a link to the dashboard.
 
 **When the team needs clarification**, they reply to the thread from the shared `digitalcomms@qiu.edu.my` inbox. The requestor replies back in the same thread. Everything stays in one conversation.
 

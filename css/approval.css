@@ -1,0 +1,179 @@
+/* ============================================================
+   approval.css — HOD Approvals page (approval.html)
+   ============================================================ */
+
+/* ── PAGE HEADER (green variant) ── */
+.page-header {
+  padding: 44px 40px 36px;
+  background: #1e3a2a;
+  color: var(--paper);
+}
+.page-header .tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #7dd4a8;
+  border: 1px solid rgba(125, 212, 168, 0.35);
+  padding: 4px 12px;
+  border-radius: 2px;
+  margin-bottom: 16px;
+  display: inline-block;
+}
+.page-header h1 {
+  font-weight: 800;
+  font-size: clamp(22px, 3vw, 32px);
+  margin-bottom: 8px;
+}
+.page-header p { font-size: 14px; opacity: 0.6; font-weight: 300; }
+
+/* ── PAGE BODY ── */
+.page-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 40px 80px;
+}
+
+/* ── POC NOTICE ── */
+.poc-notice {
+  background: var(--amber-light);
+  border: 1px solid rgba(180, 83, 9, 0.2);
+  border-radius: 6px;
+  padding: 12px 18px;
+  font-size: 13px;
+  color: var(--amber);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+/* ── REQUEST LIST ── */
+.req-list { display: flex; flex-direction: column; gap: 14px; }
+
+.req-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.req-card:hover { box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06); }
+
+/* ── CARD HEADER ── */
+.req-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px;
+  cursor: pointer;
+}
+.ref-tag {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--rust);
+  white-space: nowrap;
+}
+.req-info { flex: 1; }
+.req-name { font-weight: 600; font-size: 14px; }
+.req-dept { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.req-badges { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.toggle-icon { font-size: 14px; color: var(--muted); transition: transform 0.2s; }
+.toggle-icon.open { transform: rotate(180deg); }
+
+/* ── CARD BODY (expandable) ── */
+.req-body { display: none; padding: 20px 22px; border-top: 1px solid var(--border); }
+.req-body.open { display: block; }
+
+/* ── DETAIL GRID ── */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+  margin-bottom: 18px;
+}
+.dl dt {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+.dl dd { font-size: 13px; line-height: 1.5; }
+
+.sub-h {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+.desc-block {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+/* ── ACTION ROW ── */
+.action-row {
+  display: flex;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  align-items: center;
+}
+.btn-approve {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s;
+  background: var(--green);
+  color: white;
+}
+.btn-approve:hover { background: #145234; }
+.btn-reject {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.18s;
+  background: transparent;
+  color: var(--rust);
+  border: 1.5px solid var(--rust);
+}
+.btn-reject:hover { background: var(--rust); color: white; }
+
+.done-note {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 80px 20px; }
+.empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+.empty-state h3 { font-weight: 800; font-size: 18px; margin-bottom: 8px; }
+.empty-state p  { font-size: 14px; color: var(--muted); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .page-header, .page-body { padding-left: 20px; padding-right: 20px; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .req-header  { flex-wrap: wrap; gap: 10px; }
+}

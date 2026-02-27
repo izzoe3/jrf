@@ -1,0 +1,247 @@
+/* ============================================================
+   requests.css — My Requests page (my-requests.html)
+   ============================================================ */
+
+/* ── HERO WATERMARK ── */
+.hero.hero-requests::after { content: 'REQUESTS'; font-size: 110px; right: -10px; top: -10px; }
+
+/* ── EMAIL BANNER ── */
+.email-banner {
+  background: var(--indigo-light);
+  border-left: 4px solid var(--indigo);
+  margin: 24px 40px 0;
+  padding: 13px 18px;
+  font-size: 13px;
+  color: var(--indigo);
+  border-radius: 0 4px 4px 0;
+  line-height: 1.6;
+}
+.email-banner strong { display: block; margin-bottom: 2px; }
+
+/* ── PAGE BODY ── */
+.main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 40px 80px;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 72px 20px; }
+.empty-icon  { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+.empty-state h3 {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+.empty-state p {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+/* ── REQUEST CARDS ── */
+.requests-list { display: flex; flex-direction: column; gap: 16px; }
+
+.req-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.18s;
+}
+.req-card:hover { box-shadow: 0 4px 20px rgba(15, 14, 13, 0.08); }
+
+.req-header {
+  padding: 18px 22px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+}
+.req-header-left { flex: 1; min-width: 0; }
+.req-ref {
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--rust);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.req-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 6px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.req-meta {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.req-meta span { display: flex; align-items: center; gap: 4px; }
+
+.req-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.expand-icon {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+  transition: transform 0.2s;
+}
+.req-card.open .expand-icon { transform: rotate(180deg); }
+
+/* ── PROGRESS STEPPER ── */
+.progress-wrap {
+  padding: 0 22px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+.stepper::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+.step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+.step-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+.step-dot.done     { background: var(--green);  border-color: var(--green);  color: var(--white); }
+.step-dot.active   { background: var(--rust);   border-color: var(--rust);   color: var(--white); box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.15); }
+.step-dot.hold     { background: #999;           border-color: #999;           color: var(--white); }
+.step-dot.rejected { background: var(--rust);   border-color: var(--rust);   color: var(--white); }
+
+.step-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  max-width: 64px;
+}
+.step-label.active-label { color: var(--ink); font-weight: 700; }
+
+/* ── STATUS MESSAGE ── */
+.status-msg {
+  margin: 14px 22px 0;
+  padding: 11px 14px;
+  border-radius: 5px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.msg-amber  { background: var(--amber-light);  color: var(--amber);  border-left: 3px solid var(--amber); }
+.msg-green  { background: var(--green-light);  color: var(--green);  border-left: 3px solid var(--green); }
+.msg-indigo { background: var(--indigo-light); color: var(--indigo); border-left: 3px solid var(--indigo); }
+.msg-gray   { background: #f0f0f0;              color: #555;           border-left: 3px solid #999; }
+.msg-rust   { background: var(--rust-light);   color: var(--rust);   border-left: 3px solid var(--rust); }
+
+/* ── DETAIL PANEL ── */
+.req-detail {
+  display: none;
+  padding: 20px 22px 22px;
+  border-top: 1px solid var(--border);
+}
+.req-card.open .req-detail { display: block; }
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 24px;
+  margin-bottom: 18px;
+}
+.dl { display: flex; flex-direction: column; gap: 2px; }
+dt {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+dd { font-size: 13px; color: var(--ink); line-height: 1.5; }
+
+.sub-heading {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+.desc-block {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 12px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+.desc-block p  { margin-bottom: 8px; }
+.desc-block p:last-child { margin-bottom: 0; }
+.desc-block ul,
+.desc-block ol { padding-left: 18px; }
+.desc-block li { margin-bottom: 4px; }
+
+.ref-link { font-size: 13px; color: var(--indigo); word-break: break-all; }
+.ref-link a { color: var(--indigo); }
+
+/* ── POC NOTICE ── */
+.poc-notice {
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: 20px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .email-banner { margin-left: 20px; margin-right: 20px; }
+  .main { padding-left: 20px; padding-right: 20px; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .req-meta { gap: 8px; }
+}

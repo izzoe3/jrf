@@ -5,91 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Approvals — QIU Digital Communications</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #0f0e0d; --paper: #f5f2ee; --white: #fff;
-    --rust: #c0392b; --rust-light: #f5e8e6;
-    --gold: #c9a84c; --muted: #7a7570; --border: #d6d0c8;
-    --green: #1a6b45; --green-light: #eaf5ef;
-    --amber: #b45309; --amber-light: #fef3c7;
-    --indigo: #3730a3; --indigo-light: #eef2ff;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Poppins', sans-serif; background: var(--paper); color: var(--ink); }
-
-  .topband { background: var(--ink); color: var(--paper); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 20; }
-  .brand { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
-  .brand span { color: var(--gold); }
-  nav { display: flex; gap: 2px; }
-  nav a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 13px; border-radius: 3px; transition: all 0.18s; }
-  nav a:hover { color: var(--paper); background: rgba(255,255,255,0.07); }
-  nav a.active { color: var(--gold); background: rgba(201,168,76,0.1); }
-  .sso-badge { font-size: 11px; color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 6px; }
-  .sso-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; }
-
-  .page-header { padding: 44px 40px 36px; background: #1e3a2a; color: var(--paper); }
-  .page-header .tag { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: #7dd4a8; border: 1px solid rgba(125,212,168,0.35); padding: 4px 12px; border-radius: 2px; margin-bottom: 16px; display: inline-block; }
-  .page-header h1 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: clamp(22px,3vw,32px); margin-bottom: 8px; }
-  .page-header p { font-size: 14px; opacity: 0.6; font-weight: 300; }
-
-  .page-body { max-width: 900px; margin: 0 auto; padding: 32px 40px 80px; }
-
-  .poc-notice { background: var(--amber-light); border: 1px solid rgba(180,83,9,0.2); border-radius: 6px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 28px; line-height: 1.6; }
-
-  .req-list { display: flex; flex-direction: column; gap: 14px; }
-
-  .req-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: box-shadow 0.2s; }
-  .req-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.06); }
-
-  .req-header { display: flex; align-items: center; gap: 16px; padding: 18px 22px; cursor: pointer; }
-  .ref-tag { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px; color: var(--rust); white-space: nowrap; }
-  .req-info { flex: 1; }
-  .req-name { font-weight: 600; font-size: 14px; }
-  .req-dept { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .req-badges { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-  .toggle-icon { font-size: 14px; color: var(--muted); transition: transform 0.2s; }
-  .toggle-icon.open { transform: rotate(180deg); }
-
-  .status-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; display: inline-block; }
-  .s-pending_approval { background: var(--amber-light); color: var(--amber); }
-  .s-approved { background: var(--green-light); color: var(--green); }
-  .s-rejected { background: var(--rust-light); color: var(--rust); }
-  .s-in_progress { background: var(--indigo-light); color: var(--indigo); }
-  .s-on_hold, .s-completed { background: #f3f4f6; color: #6b7280; }
-  .cat-pill { font-size: 11px; padding: 3px 9px; border-radius: 20px; background: var(--paper); border: 1px solid var(--border); color: var(--muted); }
-
-  .req-body { display: none; padding: 20px 22px; border-top: 1px solid var(--border); }
-  .req-body.open { display: block; }
-
-  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin-bottom: 18px; }
-  .dl dt { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 3px; }
-  .dl dd { font-size: 13px; line-height: 1.5; }
-  .desc-block { background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 12px 14px; font-size: 13px; line-height: 1.7; margin-bottom: 12px; }
-  .sub-h { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 7px; }
-
-  .action-row { display: flex; gap: 10px; padding-top: 16px; border-top: 1px solid var(--border); align-items: center; }
-  .btn { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 22px; border-radius: 4px; border: none; cursor: pointer; transition: all 0.18s; }
-  .btn-approve { background: var(--green); color: white; }
-  .btn-approve:hover { background: #145234; }
-  .btn-reject { background: transparent; color: var(--rust); border: 1.5px solid var(--rust); }
-  .btn-reject:hover { background: var(--rust); color: white; }
-  .done-note { font-size: 13px; color: var(--muted); font-style: italic; padding-top: 16px; border-top: 1px solid var(--border); }
-
-  .empty-state { text-align: center; padding: 80px 20px; }
-  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
-  .empty-state h3 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 18px; margin-bottom: 8px; }
-  .empty-state p { font-size: 14px; color: var(--muted); }
-
-  @media(max-width:640px) {
-    .topband, .page-header, .page-body { padding-left: 20px; padding-right: 20px; }
-    .detail-grid { grid-template-columns: 1fr; }
-    .req-header { flex-wrap: wrap; gap: 10px; }
-    .sso-badge { display: none; }
-  }
-</style>
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/approval.css">
 </head>
 <body>
 
+<!-- ── NAVIGATION ── -->
 <div class="topband">
   <div class="brand">QIU <span>Digital Comms</span></div>
   <nav>
@@ -101,110 +22,25 @@
   <div class="sso-badge"><div class="sso-dot"></div>Google SSO</div>
 </div>
 
+<!-- ── PAGE HEADER ── -->
 <div class="page-header">
   <div class="tag">HOD / Dean Portal</div>
   <h1>Pending Endorsements</h1>
   <p>Review and endorse job requests from your faculty before Digital Comms processes them.</p>
 </div>
 
+<!-- ── CONTENT ── -->
 <div class="page-body">
   <div class="poc-notice">
-    <strong>POC Mode:</strong> This simulates the HOD's view. In production, HODs will receive an email notification with a direct link to approve or reject their staff's specific request, authenticated via Google SSO.
+    <strong>POC Mode:</strong> This simulates the HOD's view. In production, HODs will receive an email
+    notification with a direct link to approve or reject their staff's specific request,
+    authenticated via Google SSO.
   </div>
   <div class="req-list" id="reqList"></div>
 </div>
 
-<script>
-  const CAT_LABELS = { printed:'🖨️ Printed Media', digital:'📱 Digital Media', website:'🌐 Website', event:'📸 Event Coverage', video:'🎬 Video Production', other:'✦ Other' };
-  const STATUS_LABELS = { pending_approval:'Awaiting Approval', approved:'Approved', rejected:'Rejected', in_progress:'In Progress', completed:'Completed', on_hold:'On Hold' };
-
-  function fmtDate(iso) { if(!iso) return '—'; return new Date(iso).toLocaleDateString('en-MY',{day:'numeric',month:'short',year:'numeric'}); }
-
-  let openIdx = null;
-  function toggle(i) {
-    const body = document.getElementById(`b-${i}`);
-    const icon = document.getElementById(`ic-${i}`);
-    if (openIdx !== null && openIdx !== i) {
-      document.getElementById(`b-${openIdx}`)?.classList.remove('open');
-      document.getElementById(`ic-${openIdx}`)?.classList.remove('open');
-    }
-    const was = body.classList.contains('open');
-    body.classList.toggle('open', !was);
-    icon.classList.toggle('open', !was);
-    openIdx = was ? null : i;
-  }
-
-  function approve(i, e) {
-    e.stopPropagation();
-    const reqs = JSON.parse(localStorage.getItem('qiu_requests')||'[]');
-    reqs[i].status = 'approved';
-    reqs[i].approvedAt = new Date().toISOString();
-    reqs[i].timeline = reqs[i].timeline || [];
-    reqs[i].timeline.push({ action: 'Endorsed by HOD', by: 'HOD', date: new Date().toISOString() });
-    localStorage.setItem('qiu_requests', JSON.stringify(reqs));
-    render(); setTimeout(() => { document.getElementById(`b-${i}`)?.classList.add('open'); document.getElementById(`ic-${i}`)?.classList.add('open'); }, 30);
-  }
-
-  function reject(i, e) {
-    e.stopPropagation();
-    const reason = prompt('Reason for rejection (optional):');
-    const reqs = JSON.parse(localStorage.getItem('qiu_requests')||'[]');
-    reqs[i].status = 'rejected';
-    reqs[i].rejectedAt = new Date().toISOString();
-    reqs[i].rejectionReason = reason || '';
-    reqs[i].timeline = reqs[i].timeline || [];
-    reqs[i].timeline.push({ action: `Rejected by HOD${reason ? ': '+reason : ''}`, by: 'HOD', date: new Date().toISOString() });
-    localStorage.setItem('qiu_requests', JSON.stringify(reqs));
-    render();
-  }
-
-  function render() {
-    const reqs = JSON.parse(localStorage.getItem('qiu_requests')||'[]');
-    const list = document.getElementById('reqList');
-    if (!reqs.length) {
-      list.innerHTML = `<div class="empty-state"><div class="icon">📭</div><h3>No requests</h3><p>When staff submit job requests, they will appear here for your endorsement.</p></div>`;
-      return;
-    }
-    list.innerHTML = reqs.map((r,i) => {
-      const isPending = r.status === 'pending_approval';
-      return `<div class="req-card">
-        <div class="req-header" onclick="toggle(${i})">
-          <div class="ref-tag">${r.ref}</div>
-          <div class="req-info">
-            <div class="req-name">${r.requestedBy}</div>
-            <div class="req-dept">${r.department} · Submitted ${fmtDate(r.submittedAt)}</div>
-          </div>
-          <div class="req-badges">
-            <span class="cat-pill">${CAT_LABELS[r.category]||r.category}</span>
-            <span class="status-badge s-${r.status}">${STATUS_LABELS[r.status]||r.status}</span>
-            <span class="toggle-icon" id="ic-${i}">▾</span>
-          </div>
-        </div>
-        <div class="req-body" id="b-${i}">
-          <div class="detail-grid">
-            <div class="dl"><dt>Requestor</dt><dd>${r.requestedBy} · ${r.email}</dd></div>
-            <div class="dl"><dt>Department</dt><dd>${r.department}</dd></div>
-            <div class="dl"><dt>Request Date</dt><dd>${fmtDate(r.requestedDate)}</dd></div>
-            <div class="dl"><dt>Due Date</dt><dd>${fmtDate(r.dueDate)}</dd></div>
-            <div class="dl"><dt>Category</dt><dd>${CAT_LABELS[r.category]||r.category}</dd></div>
-            <div class="dl"><dt>Sub-types</dt><dd>${r.subtypes?.length?r.subtypes.join(', '):'—'}</dd></div>
-            ${r.size?`<div class="dl"><dt>Size / Specs</dt><dd>${r.size}${r.colour?' · '+r.colour:''}${r.bleed?' · '+r.bleed:''}</dd></div>`:''}
-          </div>
-          <div class="sub-h">Job Purpose</div>
-          <div class="desc-block">${r.jobPurpose}</div>
-          <div class="sub-h">Project Description</div>
-          <div class="desc-block">${r.description}</div>
-          ${r.references?`<div class="sub-h">References</div><div class="desc-block">${r.references}</div>`:''}
-          ${isPending
-            ? `<div class="action-row"><button class="btn btn-approve" onclick="approve(${i},event)">✓ Endorse & Approve</button><button class="btn btn-reject" onclick="reject(${i},event)">✗ Reject</button></div>`
-            : `<div class="done-note">${r.status==='approved'?'✓ You approved this on '+fmtDate(r.approvedAt):r.status==='rejected'?'✗ Rejected on '+fmtDate(r.rejectedAt):'This request is being handled by Digital Comms.'}</div>`
-          }
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  render();
-</script>
+<!-- ── SCRIPTS ── -->
+<script src="js/shared.js"></script>
+<script src="js/approval.js"></script>
 </body>
 </html>
